@@ -28,9 +28,19 @@ def load_data():
     lrac_vp = pd.read_excel(xlsx, sheet_name="LRACxVP")
     lrac_ger = pd.read_excel(xlsx, sheet_name="LRACxGerencia")
     lrac_global = pd.read_excel(xlsx, sheet_name="LRAC_Global")
-    # Normalizar encabezado AÑO (mojibake)
+    # Normalizar headers con mojibake (cambia segun version de openpyxl/pandas)
+    def fix(cols):
+        out = []
+        for c in cols:
+            s = str(c)
+            if s.startswith("A") and "O" in s and len(s) <= 5:
+                s = "ANIO"
+            elif s.startswith("DESEMPE"):
+                s = "DESEMPENO"
+            out.append(s)
+        return out
     for df in (base, lrac_vp, lrac_ger, lrac_global):
-        df.columns = [c.replace("A�O", "ANIO") for c in df.columns]
+        df.columns = fix(df.columns)
     return base, lrac_vp, lrac_ger, lrac_global
 
 base, lrac_vp, lrac_ger, lrac_global = load_data()
@@ -159,10 +169,9 @@ with col_b:
 st.markdown("### Detalle por gerencia-mes")
 if len(filtro_ger):
     show = filtro_ger[
-        ["VICEPRESIDENCIA", "GERENCIA", "MES", "3Q", "ACC", "CCV", "DESEMPE�O", "FTO", "NMAP", "VEA P1", "LRAC-4P"]
+        ["VICEPRESIDENCIA", "GERENCIA", "MES", "3Q", "ACC", "CCV", "DESEMPENO", "FTO", "NMAP", "VEA P1", "LRAC-4P"]
     ].copy()
-    # rename mojibake
-    show = show.rename(columns={"DESEMPE�O": "DESEMPEÑO"})
+    show = show.rename(columns={"DESEMPENO": "DESEMPEÑO"})
     for col in ["3Q", "ACC", "CCV", "DESEMPEÑO", "FTO", "NMAP", "VEA P1", "LRAC-4P"]:
         show[col] = (show[col] * 100).round(1)
     st.dataframe(
