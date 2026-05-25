@@ -11,7 +11,6 @@ Todo el material del agente está listo. Faltan solo acciones manuales puntuales
 |---|---|---|
 | ✅ | **PDF v7 maestro · 25 pp** | `report/Emanuel Edgar Ancco Guaygua.pdf` |
 | ✅ | **Repo GitHub público** | https://github.com/EmanuelAncco/lasbambas-lrac-2026 |
-| ✅ | **Workflow LRAC-001 vivo en n8n** | https://aecodetest.app.n8n.cloud/workflow/qRW88FSByN26nDJr |
 | ✅ | **Voiceover Gemini Kore (106 s)** | `video/voiceover.wav` (4.97 MB) |
 | ✅ | **Anexo A5 · Dashboard HTML autocontenido** | `report/Emanuel_LRAC_Dashboard.html` |
 | ✅ | **Slides PDF (14 slides)** | `report/emanuel-ancco-lrac-slides.pdf` |
@@ -110,14 +109,10 @@ A2. Demo Streamlit interactivo (dashboard + simulador del plan + catálogo
     de workflows):
     https://lasbambas-lrac-emanuel.streamlit.app
 
-A3. Workflow LRAC-001 (TOKI clasificador RACS) desplegado en
-    instancia n8n para inspección directa por el jurado:
-    https://aecodetest.app.n8n.cloud/workflow/qRW88FSByN26nDJr
-
-A4. Slides de sustentación oral (10 minutos, Slidev):
+A3. Slides de sustentación oral (10 minutos, Slidev):
     PDF adjunto: emanuel-ancco-lrac-slides.pdf
 
-A5. Dashboard HTML autocontenido equivalente a Power BI (5 pestañas
+A4. Dashboard HTML autocontenido equivalente a Power BI (5 pestañas
     interactivas con Plotly, abre en cualquier navegador):
     https://github.com/EmanuelAncco/lasbambas-lrac-2026/blob/main/report/Emanuel_LRAC_Dashboard.html
     (también adjunto)
