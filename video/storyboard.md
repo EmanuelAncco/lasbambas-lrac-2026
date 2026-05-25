@@ -30,7 +30,7 @@
 
 ```
 ┌────────────────────────────────────────────────────────┐
-│  WORKFLOW LRAC-001 · RACS GUIADO         M1.B Aecodito │
+│  WORKFLOW LRAC-001 · RACS GUIADO         M1.B TOKI │
 │  ─────────────────────────────────────────────────────│
 │                                                        │
 │         Bot conversacional WhatsApp + n8n             │
@@ -41,7 +41,7 @@
 └────────────────────────────────────────────────────────┘
 ```
 
-## Frame 0:10 – 0:30 · Split screen Aecodito
+## Frame 0:10 – 0:30 · Split screen TOKI
 
 ```
 ┌────────────────────────┬────────────────────────────────┐
@@ -187,6 +187,6 @@
 ## Notas de producción
 
 - El bounding-box demo en escena 3 puede ser una grabación real del Vision Pro PDK en producción (VPS 187.77.250.111:3020) o, si hay restricciones de acceso, una grabación local del modelo corriendo sobre 10-15 imágenes del dataset peruano.
-- La animación n8n del canvas se puede grabar con OBS Studio abriendo el bot Aecodito existente en n8n self-hosted.
+- La animación n8n del canvas se puede grabar con OBS Studio abriendo el bot TOKI existente en n8n self-hosted.
 - El mockup de WhatsApp puede generarse rápido con WhatsApp Web + Stencil de Figma, o capturando una conversación real en un grupo de prueba.
 - Render final: H.264, 1080 p 60 fps, bitrate 12 Mbps. Subir a YouTube como unlisted; el procesado tarda ~5-10 min.

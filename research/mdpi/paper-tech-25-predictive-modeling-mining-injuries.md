@@ -24,14 +24,14 @@ Aplica machine learning (árboles de decisión, random forest, redes neuronales)
 ## Hallazgos clave aplicables
 
 - **Random Forest sobre narrativas alcanza 93–94% de exactitud** prediciendo tipo de lesión: viable como motor analítico para el módulo predictivo del dashboard M1.0.
-- **Las narrativas (texto libre)** contienen información clave ausente en campos estructurados, lo cual valida el componente Aecodito + Gemini (chatbot recolector de reportes en lenguaje natural por WhatsApp).
+- **Las narrativas (texto libre)** contienen información clave ausente en campos estructurados, lo cual valida el componente TOKI + Gemini (chatbot recolector de reportes en lenguaje natural por WhatsApp).
 - **Importancia de variables**: naturaleza de la lesión > parte del cuerpo > ocupación. Útil para diseñar las dimensiones del dashboard rol-based (rol = ocupación; vista LRAC vs. operador).
 - **Datos tabulares ganan en predicción de días perdidos** mientras narrativas ganan en severidad: justifica un híbrido tabular+NLP en el pipeline n8n + Gemini de M1.0.
 - **Synthetic narrative generation** (word embeddings) mejora clases minoritarias: técnica replicable para casos de Las Bambas con pocos datos históricos en algunos tipos de accidente.
 
 ## Cómo apoya la propuesta GAIATECH M1.0
 
-Sustenta científicamente que un pipeline narrativa-texto (WhatsApp → Aecodito → Gemini → BD) sumado a datos estructurados (visión, sensores) puede predecir accidentes con alta precisión. Permite al informe LRAC argumentar que GAIATECH M1.0 no solo "detecta" EPP en tiempo real, sino que aprende y proyecta riesgos a partir de reportes históricos, dándole continuidad analítica al ciclo. Refuerza la propuesta de modelo Random Forest como baseline en el dashboard predictivo.
+Sustenta científicamente que un pipeline narrativa-texto (WhatsApp → TOKI → Gemini → BD) sumado a datos estructurados (visión, sensores) puede predecir accidentes con alta precisión. Permite al informe LRAC argumentar que GAIATECH M1.0 no solo "detecta" EPP en tiempo real, sino que aprende y proyecta riesgos a partir de reportes históricos, dándole continuidad analítica al ciclo. Refuerza la propuesta de modelo Random Forest como baseline en el dashboard predictivo.
 
 ## Citación APA 7
 

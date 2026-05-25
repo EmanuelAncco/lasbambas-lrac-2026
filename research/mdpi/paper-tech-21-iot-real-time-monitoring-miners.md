@@ -33,7 +33,7 @@ Sistema IoT minero para vigilar en tiempo real la seguridad, salud y fatiga de m
 
 ## Cómo apoya la propuesta GAIATECH M1.0
 
-Demuestra que la combinación dashboard + wearables + posicionamiento + ML para fatiga es viable industrialmente y reduce incidentes. Refuerza la pieza "dashboard rol-based" del M1.0 con evidencia de que las visualizaciones unificadas mejoran la respuesta de emergencia, y abre línea futura para sumar wearables Aecodito-compatibles al stack n8n + WhatsApp. También respalda que el FPGA estructural y la cámara YOLOv8 conviven con sensores fisiológicos en una sola plataforma.
+Demuestra que la combinación dashboard + wearables + posicionamiento + ML para fatiga es viable industrialmente y reduce incidentes. Refuerza la pieza "dashboard rol-based" del M1.0 con evidencia de que las visualizaciones unificadas mejoran la respuesta de emergencia, y abre línea futura para sumar wearables TOKI-compatibles al stack n8n + WhatsApp. También respalda que el FPGA estructural y la cámara YOLOv8 conviven con sensores fisiológicos en una sola plataforma.
 
 ## Citación APA 7
 

@@ -16,7 +16,7 @@ Todo el material del agente está listo. Faltan solo acciones manuales puntuales
 | ✅ | **Anexo A5 · Dashboard HTML autocontenido** | `report/Emanuel_LRAC_Dashboard.html` |
 | ✅ | **Slides PDF (14 slides)** | `report/emanuel-ancco-lrac-slides.pdf` |
 | ✅ | **One-pager imprimible** | `report/onepager.html` + `.png` |
-| ✅ | **Mockup WhatsApp HD** | `video/mockups/whatsapp-aecodito.html` + `.png` |
+| ✅ | **Mockup WhatsApp HD** | `video/mockups/whatsapp-toki.html` + `.png` |
 | ✅ | **5 capturas Playwright Streamlit** | `video/captures/` |
 | ✅ | **4 workflows n8n exportables (JSON)** | `n8n-workflows/` |
 | ✅ | **12 docs arquitectónicos** | `docs/workflows/*.md` |
@@ -50,7 +50,7 @@ Solo si tienes tiempo el viernes. Los assets están todos listos en `video/`:
 - `storyboard.md` · storyboard con frames ASCII
 - `voiceover.wav` · audio listo (~106 s)
 - `captures/` · 5 capturas del Streamlit
-- `mockups/whatsapp-aecodito.png` · mockup HD WhatsApp
+- `mockups/whatsapp-toki.png` · mockup HD WhatsApp
 
 Subir a YouTube unlisted al terminar. Si no llega a tiempo, el PDF + repo + Streamlit + slides son suficientes.
 
@@ -110,7 +110,7 @@ A2. Demo Streamlit interactivo (dashboard + simulador del plan + catálogo
     de workflows):
     https://lasbambas-lrac-emanuel.streamlit.app
 
-A3. Workflow LRAC-001 (Aecodito Minero clasificador RACS) desplegado en
+A3. Workflow LRAC-001 (TOKI clasificador RACS) desplegado en
     instancia n8n para inspección directa por el jurado:
     https://aecodetest.app.n8n.cloud/workflow/qRW88FSByN26nDJr
 
@@ -137,7 +137,7 @@ ya construidos por el postulante:
 
   · M1.A · Visión computacional EPP (YOLOv8 sobre 14 055 imágenes
     peruanas, mAP@0.5 87.67 %, 38 FPS Jetson Orin Nano Super).
-  · M1.B · Agente WhatsApp Aecodito Minero (n8n + Evolution API +
+  · M1.B · Agente WhatsApp TOKI (n8n + Evolution API +
     Gemini Pro, 50 nodos, 10 herramientas integradas).
   · M1.C · GAIATECH VIGÍA (FPGA Gowin GW1NR-9 + ESP32 + LSTM-AE
     F1 = 0.961, ganador del 2.º lugar AI Talent Demo Day 2026).

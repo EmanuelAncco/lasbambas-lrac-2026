@@ -23,13 +23,13 @@ Explora cómo los conjuntos de datos operacionales disponibles en minas modernas
 
 - **Distinción leading vs. lagging**: los indicadores rezagados (tasas de lesión) son útiles para auditoría pero no previenen; los líderes (condiciones del proceso) son los que importan al M1.0. Concepto clave para defender el dashboard predictivo.
 - **Variables operativas como insumo de ML**: horas trabajadas, turnos, clima, salud del equipo. Todas son disponibles en MMG Las Bambas y pueden integrarse vía n8n.
-- **Mining engineering + psychology**: combinación interdisciplinaria que valida la inclusión del módulo conversacional Aecodito (componente "humano" del M1.0).
+- **Mining engineering + psychology**: combinación interdisciplinaria que valida la inclusión del módulo conversacional TOKI (componente "humano" del M1.0).
 - **Fatiga como riesgo cuantificable**: argumento para que GAIATECH M1.0 incluya un score predictivo de fatiga en el dashboard.
 - **Caso de uso operativo**: los datos ya existen en los mines modernos; el desafío es integrarlos. El n8n + Postgres del M1.0 resuelve la integración.
 
 ## Cómo apoya la propuesta GAIATECH M1.0
 
-Justifica añadir indicadores líderes (no solo lagging) en el dashboard del informe LRAC. Argumenta el porqué de un módulo de fatiga predictiva alimentado por turnos, clima y reportes Aecodito. Convierte al M1.0 en una herramienta de prevención y no solo de monitoreo, alineado con la doctrina de seguridad moderna que MMG Las Bambas exige.
+Justifica añadir indicadores líderes (no solo lagging) en el dashboard del informe LRAC. Argumenta el porqué de un módulo de fatiga predictiva alimentado por turnos, clima y reportes TOKI. Convierte al M1.0 en una herramienta de prevención y no solo de monitoreo, alineado con la doctrina de seguridad moderna que MMG Las Bambas exige.
 
 ## Citación APA 7
 

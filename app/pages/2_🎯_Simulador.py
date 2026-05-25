@@ -40,7 +40,7 @@ with c1:
 
     with cl1:
         L = st.slider("**Pilar L — Liderazgo**", 50.0, 95.0, BASE["L"], 0.5, key="L",
-                       help="FTO + 3Q. Habilitadores: workflows LRAC-001/002 (Aecodito) + LRAC-021 (geofence 6-4-2)")
+                       help="FTO + 3Q. Habilitadores: workflows LRAC-001/002 (TOKI) + LRAC-021 (geofence 6-4-2)")
     with cl2:
         R = st.slider("**Pilar R — Riesgos**", 50.0, 95.0, BASE["R"], 0.5, key="R",
                        help="CCV + ACC. Habilitadores: workflows LRAC-010/011 (visión EPP) + LRAC-012 (cierre con IA) + LRAC-020 (VIGÍA estructural)")

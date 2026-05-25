@@ -181,7 +181,7 @@ Los 4 incluidos son los más representativos arquitectónicamente (uno por módu
 - **Idempotencia:** los workflows asumen Postgres como fuente única de verdad. Si se reintenta, la `ON CONFLICT` de `lrac_sesiones` y el `UPSERT` aseguran consistencia.
 - **Observabilidad:** todos los workflows escriben en tablas de log + el panel n8n nativo muestra ejecuciones.
 
-## Cómo correr el bot Aecodito Minero en un VPS limpio
+## Cómo correr el bot TOKI en un VPS limpio
 
 ```bash
 # 1) Docker compose con n8n + Postgres + Evolution API

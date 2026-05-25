@@ -29,7 +29,7 @@ Las plataformas comerciales son robustas, certificadas y bancarias-grado. Cobran
 | **Captura RACS móvil** | Sí · módulo EHS Worker Health | Sí · móvil nativo | Sí · EHS Connect | **Sí · WhatsApp bot (zero-install)** |
 | **Visión computacional EPP** | No nativo · integración tercero | No nativo | No nativo | **Sí · YOLOv8 87.67 % mAP** |
 | **Monitoreo estructural IoT** | Vía SAP IoT (costo extra) | Vía integración OEM | Vía Wolters IoT | **Sí · FPGA propio F1=0.961** |
-| **Agente conversacional** | No (chatbot básico) | No | No | **Sí · Aecodito Minero n8n+Gemini** |
+| **Agente conversacional** | No (chatbot básico) | No | No | **Sí · TOKI n8n+Gemini** |
 | **Datos peruanos en modelos** | No | No | No | **Sí · 14 055 imgs entrenadas localmente** |
 | **Cumplimiento DS 024-2016-EM** | Configurable | Configurable | Configurable | **Nativo · plantillas peruanas** |
 | **Cumplimiento DS 034-2023-EM Cap. XII (relaves)** | Manual · custom dev | Manual | Manual | **Workflow LRAC-032 automático a VVO OSINERGMIN** |

@@ -52,7 +52,7 @@ Salida: `voiceover.wav` (~2 MB, ~90 s, voz Kore femenina profunda).
 
 | Asset | Cómo obtenerlo | Tiempo |
 |---|---|---|
-| Conversación WhatsApp Aecodito | Abrir un chat real en un grupo de prueba con el bot y grabar con OBS Studio | 10 min |
+| Conversación WhatsApp TOKI | Abrir un chat real en un grupo de prueba con el bot y grabar con OBS Studio | 10 min |
 | n8n canvas animado | Abrir el workflow LRAC-001 en n8n self-hosted, grabar con OBS pasando el cursor por los nodos en orden | 10 min |
 | Bounding boxes EPP | Cargar 10 fotos peruanas en Vision Pro PDK, grabar las detecciones | 15 min |
 | Música ambient | YouTube Audio Library · categoría "Cinematic > Calm" | 5 min |
@@ -76,7 +76,7 @@ Salida: `voiceover.wav` (~2 MB, ~90 s, voz Kore femenina profunda).
 5. Capítulos en la descripción (YouTube los detecta):
    ```
    00:00 Diagnóstico
-   00:05 Aecodito Minero (M1.B)
+   00:05 TOKI (M1.B)
    00:35 Visión EPP (M1.A)
    01:00 Dashboard ejecutivo (M1.D)
    01:20 Cierre

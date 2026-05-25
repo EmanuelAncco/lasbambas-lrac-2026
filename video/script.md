@@ -12,7 +12,7 @@ fecha: 2026-05-21
 
 > **Mensaje único:** Mina Juanita S.A. tiene un LRAC al 55 %. El plan no se arregla con más formatos en papel — se arregla con cuatro módulos digitales que ya están construidos, en producción y miden por sí solos.
 
-> **Estructura:** 5 escenas. Hook (5 s) · M1.B Aecodito (30 s) · M1.A Visión EPP (25 s) · M1.D Dashboard (20 s) · Cierre (10 s).
+> **Estructura:** 5 escenas. Hook (5 s) · M1.B TOKI (30 s) · M1.A Visión EPP (25 s) · M1.D Dashboard (20 s) · Cierre (10 s).
 
 ---
 
@@ -36,10 +36,10 @@ fecha: 2026-05-21
 
 ---
 
-## Escena 2 · M1.B · Aecodito Minero captura un RACS ⏱ 0:05 – 0:35
+## Escena 2 · M1.B · TOKI captura un RACS ⏱ 0:05 – 0:35
 
 **Voiceover (~30 s · 85 palabras):**
-> "Workflow LRAC cero cero uno. Aecodito Minero es un bot de WhatsApp con cincuenta nodos en n8n. El operador escribe ‘RACS’ desde la planta. El bot pide una foto. Captura GPS automático. Recibe la descripción en texto o nota de voz. Gemini Pro clasifica acto o condición sub-estándar, severidad, y el fatal-risk asociado. En menos de quince segundos el reporte está en la base con embedding, el supervisor recibe la alerta, y el operador tiene número de ticket. La fricción del formato en papel desaparece."
+> "Workflow LRAC cero cero uno. TOKI es un bot de WhatsApp con cincuenta nodos en n8n. El operador escribe ‘RACS’ desde la planta. El bot pide una foto. Captura GPS automático. Recibe la descripción en texto o nota de voz. Gemini Pro clasifica acto o condición sub-estándar, severidad, y el fatal-risk asociado. En menos de quince segundos el reporte está en la base con embedding, el supervisor recibe la alerta, y el operador tiene número de ticket. La fricción del formato en papel desaparece."
 
 **Visual (split-screen):**
 - **Izquierda (60 %):** mockup animado de conversación WhatsApp con timestamps reales:
@@ -139,7 +139,7 @@ fecha: 2026-05-21
 
 ```
 00:00 – 00:05  Escena 1 · Hook                  Bin: Intro
-00:05 – 00:35  Escena 2 · Aecodito Minero       Bin: M1.B
+00:05 – 00:35  Escena 2 · TOKI       Bin: M1.B
 00:35 – 01:00  Escena 3 · Visión EPP             Bin: M1.A
 01:00 – 01:20  Escena 4 · Dashboard ejecutivo    Bin: M1.D
 01:20 – 01:30  Escena 5 · Cierre                 Bin: Outro
@@ -182,7 +182,7 @@ Texto exacto que se enviará al TTS (260 palabras, 90 s a 175 ppm):
 ```
 El sistema LRAC de Mina Juanita cayó al cincuenta y cinco por ciento. Más formatos no lo arreglan.
 
-Workflow LRAC cero cero uno. Aecodito Minero es un bot de WhatsApp con cincuenta nodos en n ocho n. El operador escribe ‘RACS’ desde la planta. El bot pide una foto. Captura GPS automático. Recibe la descripción en texto o nota de voz. Gemini Pro clasifica acto o condición sub-estándar, severidad, y el fatal-risk asociado. En menos de quince segundos el reporte está en la base con embedding, el supervisor recibe la alerta, y el operador tiene número de ticket. La fricción del formato en papel desaparece.
+Workflow LRAC cero cero uno. TOKI es un bot de WhatsApp con cincuenta nodos en n ocho n. El operador escribe ‘RACS’ desde la planta. El bot pide una foto. Captura GPS automático. Recibe la descripción en texto o nota de voz. Gemini Pro clasifica acto o condición sub-estándar, severidad, y el fatal-risk asociado. En menos de quince segundos el reporte está en la base con embedding, el supervisor recibe la alerta, y el operador tiene número de ticket. La fricción del formato en papel desaparece.
 
 Workflow LRAC cero once. La verificación de controles críticos deja de ser un checklist humano. Cámaras IP en zonas críticas alimentan un YOLO versión ocho con ochenta y siete punto seis-siete por ciento de mAP, entrenado en catorce mil cincuenta y cinco imágenes peruanas. Treinta y ocho FPS sostenidos en Jetson Orin. Si detecta falta de EPP, el supervisor recibe la alerta con foto y ubicación en menos de treinta segundos. CCV continuo, no semanal.
 

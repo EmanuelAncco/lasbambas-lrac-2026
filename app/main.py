@@ -61,7 +61,7 @@ with col_a:
            el LRAC-4P proyectado y muestran el impacto del Plan de Acción
            Estratégico a 24 meses.
         3. **🤖 Catálogo GAIATECH M1.0** — los 12 workflows de automatización
-           (Aecodito Minero, Visión EPP, FPGA VIGÍA, Dashboard ejecutivo)
+           (TOKI, Visión EPP, FPGA VIGÍA, Dashboard ejecutivo)
            que sustentan el plan, con stack, métricas y mapeo a las acciones.
 
         ### Hallazgos clave del análisis estadístico
@@ -88,7 +88,7 @@ with col_b:
 
         - **M1.A · Visión EPP**
           YOLOv8 87.67 % mAP, 38 FPS Jetson Orin
-        - **M1.B · Aecodito Minero**
+        - **M1.B · TOKI**
           n8n + Evolution API + Gemini Pro
           50 nodos, 10 herramientas
         - **M1.C · GAIATECH VIGÍA**

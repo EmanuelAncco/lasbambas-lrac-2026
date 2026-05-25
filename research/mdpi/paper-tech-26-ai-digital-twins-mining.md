@@ -29,7 +29,7 @@ Revisión sistemática PRISMA de 68 estudios primarios (2015–2025) sobre la ap
 
 ## Cómo apoya la propuesta GAIATECH M1.0
 
-Da el marco conceptual de "gemelo digital minero con IA" en el que el M1.0 cae naturalmente: la propuesta ya integra sensores estructurales (FPGA), visión computacional (YOLOv8 EPP), automatización (n8n) y un canal humano (WhatsApp + Aecodito). El paper aporta la cifra de 11.73% de reducción de pérdidas y la legitimidad de revisión sistemática PRISMA, claves para el business case del informe LRAC.
+Da el marco conceptual de "gemelo digital minero con IA" en el que el M1.0 cae naturalmente: la propuesta ya integra sensores estructurales (FPGA), visión computacional (YOLOv8 EPP), automatización (n8n) y un canal humano (WhatsApp + TOKI). El paper aporta la cifra de 11.73% de reducción de pérdidas y la legitimidad de revisión sistemática PRISMA, claves para el business case del informe LRAC.
 
 ## Citación APA 7
 

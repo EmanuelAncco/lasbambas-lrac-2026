@@ -39,7 +39,7 @@ plt.rcParams.update({
 acciones = [
     # ---- HORIZONTE 1 (0-3 meses): Quick wins ----
     dict(id='A-01', pilar='L', h=1, titulo='Pacto público 3Q del VP SHE',
-         kpi='3Q VP SHE ≥ 90% medido por bot Aecodito en planta',
+         kpi='3Q VP SHE ≥ 90% medido por bot TOKI en planta',
          owner='VP SHE', sponsor='CEO', meta='≥90% a jun 2026',
          capex=0, opex=500, dur=3, start=0),
     dict(id='A-02', pilar='L', h=1, titulo='Tarjetas verdes ampliadas + Stop Work Authority',
@@ -80,7 +80,7 @@ acciones = [
          capex=8000, opex=1200, dur=3, start=0),
 
     # ---- HORIZONTE 2 (3-9 meses): Digitalizar el bucle ----
-    dict(id='A-11', pilar='R', h=2, titulo='Plataforma RACS conversacional Aecodito Minero',
+    dict(id='A-11', pilar='R', h=2, titulo='Plataforma RACS conversacional TOKI',
          kpi='≥2 reportes/trabajador/mes con ≥90% foto+GPS',
          owner='Lead IT SHE', sponsor='VP SHE', meta='2/trab/mes',
          capex=15000, opex=2500, dur=6, start=3),
@@ -150,7 +150,7 @@ acciones = [
          kpi='Política aprobada y aplicada a casos detectados',
          owner='Procura', sponsor='VP SUPPLY', meta='Política firmada',
          capex=0, opex=0, dur=15, start=10),
-    dict(id='A-28', pilar='A', h=3, titulo='Universidad LRAC interna (Aecodito + LMS) con certificación digital',
+    dict(id='A-28', pilar='A', h=3, titulo='Universidad LRAC interna (TOKI + LMS) con certificación digital',
          kpi='≥1000 trabajadores con ruta formativa certificada',
          owner='Aprendizaje SHE', sponsor='VP SHE', meta='1000 certificados',
          capex=45000, opex=3500, dur=15, start=9),

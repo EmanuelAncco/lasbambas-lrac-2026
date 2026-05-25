@@ -16,7 +16,7 @@ El sistema LRAC (Liderazgo, Riesgos, Aprendizaje, Contratistas) de **Mina Juanit
 
 1. **Análisis estadístico reproducible** del Excel del caso (337 registros, 4 VPs, 12 gerencias, 4 meses) con descriptivos, Kruskal-Wallis, Dunn (Bonferroni), Shewhart I-Chart, Mann-Kendall, score compuesto $S=\mu-\sigma$ y matriz de correlación 7×7.
 2. **Plan de Acción Estratégico ejecutable** de 31 acciones × 3 horizontes × 5 frentes, con Gantt visual, RACI, KPIs SMART, *risk register* y *business case* (NPV S/ 1.21 M, IRR 343 %, payback mes 11).
-3. **12 *workflows* GAIATECH M1.0** documentados (visión computacional EPP, agente conversacional Aecodito Minero, monitoreo estructural FPGA, dashboard ejecutivo y reportes Gemini Pro).
+3. **12 *workflows* GAIATECH M1.0** documentados (visión computacional EPP, agente conversacional TOKI, monitoreo estructural FPGA, dashboard ejecutivo y reportes Gemini Pro).
 4. **Demo Streamlit interactivo** que replica el dashboard ejecutivo LRAC con los datos del caso, incluye simulador del plan y catálogo de los 12 *workflows*.
 
 **Cumplimiento del instructivo:** PDF maestro de 25 páginas en Times New Roman 12 pt, interlineado 1.5, con bibliografía APA 7 (30 referencias, mayoría MDPI 2019-2026). Ver `report/Emanuel Edgar Ancco Guaygua.pdf`.
@@ -27,7 +27,7 @@ The LRAC management system (Leadership, Risks, Learning, Contractors) at **Mina 
 
 1. **Reproducible statistical analysis** of the case Excel (337 records, 4 VPs, 12 management units, 4 months) with descriptives, Kruskal-Wallis, Dunn (Bonferroni), Shewhart I-Chart, Mann-Kendall, composite score $S=\mu-\sigma$ and 7×7 correlation matrix.
 2. **Executable Strategic Action Plan** with 31 actions × 3 horizons × 5 fronts, with visual Gantt, RACI, SMART KPIs, risk register, and business case (NPV S/ 1.21 M, IRR 343 %, payback at month 11).
-3. **12 GAIATECH M1.0 workflows** documented (PPE computer vision, Aecodito Mining conversational agent, FPGA structural monitoring, executive dashboard, and Gemini Pro automated reports).
+3. **12 GAIATECH M1.0 workflows** documented (PPE computer vision, TOKI Mining conversational agent, FPGA structural monitoring, executive dashboard, and Gemini Pro automated reports).
 4. **Interactive Streamlit demo** that mirrors the executive LRAC dashboard with the case data, with plan simulator and catalog of the 12 workflows.
 
 **Brief compliance:** master PDF report (25 pages, Times New Roman 12 pt, 1.5 line spacing, APA-7 bibliography with 30 references, MDPI 2019-2026). See `report/Emanuel Edgar Ancco Guaygua.pdf`.
@@ -120,7 +120,7 @@ Requiere TeX Live o MiKTeX.
 | Módulo | Componente | Métrica verificable | Pilares LRAC |
 |---|---|---|---|
 | M1.A | Visión computacional EPP (YOLOv8 + DeepFace) | 87.67 % mAP@0.5, 38 FPS Jetson Orin | R · L |
-| M1.B | Aecodito Minero (n8n + Evolution API + Gemini) | 50 nodos, 10 tools, memoria persistente | L · A · C |
+| M1.B | TOKI (n8n + Evolution API + Gemini) | 50 nodos, 10 tools, memoria persistente | L · A · C |
 | M1.C | GAIATECH VIGÍA (FPGA Gowin + ESP32 + LSTM-AE) | F1 = 0.961, alerta < 2 s, 2.º AI Talent Demo Day | R |
 | M1.D | Dashboard ejecutivo Vision Pro PDK | Single Pane of Glass rol-based, 11 clases EPP, login httpOnly | L · R · A · C |
 

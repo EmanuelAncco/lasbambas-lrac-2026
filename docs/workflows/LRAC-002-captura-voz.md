@@ -50,7 +50,7 @@ En obra real, **escribir un RACS con guantes, casco bajo el sol o desde altura e
 
 ## Estado actual y dependencias
 
-- **Estado:** **producción** (Aecodito v3.0 ya procesa audio para otros dominios).
+- **Estado:** **producción** (TOKI v3.0 ya procesa audio para otros dominios).
 - **Dependencia crítica:** entrenamiento/fine-tuning de Whisper con audios reales de la mina si el español andino + ruido de planta degrada el WER (probable con vocabulario minero específico).
 
 ## Riesgos y mitigaciones

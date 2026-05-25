@@ -55,7 +55,7 @@ El instructivo del caso indica que la calidad de los reportes RACS (Reporte de A
 
 ## Estado actual y dependencias
 
-- **Estado:** **producción** sobre la plataforma Aecodito v3.0 (50 nodos n8n, 10 herramientas externas integradas). Adaptación al dominio LRAC implica reentrenar el clasificador Gemini con un set inicial de ~200 RACS reales etiquetados.
+- **Estado:** **producción** sobre la plataforma TOKI v3.0 (50 nodos n8n, 10 herramientas externas integradas). Adaptación al dominio LRAC implica reentrenar el clasificador Gemini con un set inicial de ~200 RACS reales etiquetados.
 - **Dependencias:**
   - WhatsApp Business + Evolution API operativos.
   - VPS Gen+ (187.77.250.111) ya tiene n8n self-hosted (GEN+ FLOWS).

@@ -25,7 +25,7 @@ Revisión sistemática PRISMA del estado del arte en tecnologías de sensores pa
 - **Catálogo completo de sensores de monitoreo estructural** (extensómetros, piezómetros, fibra óptica DTS/DAS, SAR satelital, drones LiDAR): insumo para definir los sensores conectados al FPGA estructural del M1.0.
 - **Industria 4.0 como marco regulatorio implícito**: las TSFs están adoptando IoT + tiempo real por exigencia post-Brumadinho/Mariana, lo que aplica también a la operación de Las Bambas.
 - **PRISMA + science mapping**: misma metodología que el paper "paraguas" del autor (s23156846), refuerza la legitimidad del paradigma.
-- **Énfasis en alerta temprana**: la propuesta GAIATECH M1.0 puede vender su canal WhatsApp + Aecodito como el "último kilómetro" de un sistema de early warning estructural.
+- **Énfasis en alerta temprana**: la propuesta GAIATECH M1.0 puede vender su canal WhatsApp + TOKI como el "último kilómetro" de un sistema de early warning estructural.
 - **Brecha multi-sensor**: la integración entre sensores estructurales, ambientales y operacionales sigue siendo un reto; M1.0 ofrece exactamente esa integración con n8n.
 
 ## Cómo apoya la propuesta GAIATECH M1.0

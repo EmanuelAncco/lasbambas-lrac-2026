@@ -6,7 +6,7 @@
 
 | Módulo | ID | Workflow | Pilar | Acción |
 |---|---|---|---|---|
-| **M1.B Aecodito Minero** | [LRAC-001](LRAC-001-racs-guiado.md) | RACS guiado conversacional | L · R | A-02 · A-11 |
+| **M1.B TOKI** | [LRAC-001](LRAC-001-racs-guiado.md) | RACS guiado conversacional | L · R | A-02 · A-11 |
 | | [LRAC-002](LRAC-002-captura-voz.md) | Captura de voz a RACS | L · R | A-02 · A-11 |
 | | [LRAC-003](LRAC-003-cierre-bucle.md) | Cierre de bucle con verificación IA | R | A-04 · A-11 |
 | | [LRAC-004](LRAC-004-capsula-quiz.md) | Cápsula semanal + quiz adaptativo | A · C | A-08 · A-10 · A-28 |
@@ -56,7 +56,7 @@ Secciones del contenido:
         ┌──────────────────────────┼──────────────────────────┐
         │                          │                          │
 ┌───────▼────────┐  ┌──────────────▼──────────┐  ┌────────────▼────────┐
-│ M1.A · Visión  │  │  M1.B · Aecodito Minero  │  │ M1.C · GAIATECH      │
+│ M1.A · Visión  │  │  M1.B · TOKI  │  │ M1.C · GAIATECH      │
 │ LRAC-010/011/  │  │  LRAC-001/002/003/004    │  │ VIGÍA                 │
 │       012      │  │                          │  │ LRAC-020/021          │
 └────────────────┘  └──────────────────────────┘  └──────────────────────┘

@@ -9,7 +9,7 @@ st.title("🤖 Catálogo GAIATECH M1.0 — 12 automatizaciones LRAC")
 st.caption("Los workflows que sustentan el Plan de Acción Estratégico. Detalle técnico, stack y mapeo a las acciones del plan.")
 
 WORKFLOWS = [
-    # Aecodito Minero
+    # TOKI
     {"id": "LRAC-001", "modulo": "M1.B", "nombre": "RACS guiado conversacional",
      "brecha": "Calidad del reporte preventivo (55 %), FTO PLANTA 45 %",
      "stack": "WhatsApp Business + Evolution API + n8n + Gemini Pro + Postgres pgvector",
@@ -127,12 +127,12 @@ st.divider()
 st.markdown("### Detalle técnico por workflow")
 filtro_modulo = st.selectbox(
     "Filtrar por módulo GAIATECH M1.0",
-    ["Todos", "M1.A · Visión EPP", "M1.B · Aecodito Minero", "M1.C · GAIATECH VIGÍA", "M1.D · Dashboard ejecutivo"],
+    ["Todos", "M1.A · Visión EPP", "M1.B · TOKI", "M1.C · GAIATECH VIGÍA", "M1.D · Dashboard ejecutivo"],
 )
 
 mod_map = {
     "M1.A · Visión EPP": "M1.A",
-    "M1.B · Aecodito Minero": "M1.B",
+    "M1.B · TOKI": "M1.B",
     "M1.C · GAIATECH VIGÍA": "M1.C",
     "M1.D · Dashboard ejecutivo": "M1.D",
 }
@@ -162,7 +162,7 @@ st.markdown(
     | Módulo | Componente | Estado |
     |---|---|---|
     | M1.A | Visión computacional EPP | **en producción** (Vision Pro PDK puerto 8088 VPS Gen+) |
-    | M1.B | Aecodito Minero (n8n) | **en producción** (Aecodito v3.0, 50 nodos, 10 herramientas) |
+    | M1.B | TOKI (n8n) | **en producción** (TOKI v3.0, 50 nodos, 10 herramientas) |
     | M1.C | GAIATECH VIGÍA | **prototipo funcional** (2.º AI Talent Demo Day 2026) |
     | M1.D | Dashboard ejecutivo | **en producción** (Vision Pro PDK Next.js 16) |
 

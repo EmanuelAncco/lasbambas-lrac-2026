@@ -578,7 +578,7 @@ layout: default
 </div>
 
 <div class="bg-orange-900/30 border-l-4 border-orange-500 p-4 rounded">
-  <div class="text-xs opacity-60 uppercase tracking-wider">M1.B · Aecodito Minero</div>
+  <div class="text-xs opacity-60 uppercase tracking-wider">M1.B · TOKI</div>
   <div class="font-bold text-base mb-1">Bot WhatsApp + n8n + Gemini Pro</div>
   <div class="text-xs opacity-90"><strong>50 nodos n8n</strong> · 10 herramientas externas integradas · Postgres pgvector · procesa texto / audio / foto / PDF</div>
   <div class="text-xs opacity-60 mt-2">Pilar L · A · C · <strong>en producción</strong></div>

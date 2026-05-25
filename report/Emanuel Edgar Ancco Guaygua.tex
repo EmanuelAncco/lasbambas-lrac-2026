@@ -95,7 +95,7 @@ Mina Juanita S.A.\ enfrenta un deterioro crítico en su sistema de gestión prev
 
 Este informe procesa 337 registros (Ene--Abr 2026) sobre 12 gerencias y 4 Vicepresidencias (OPERACIONES, PROYECTOS, SHE, SUPPLY) aplicando la fórmula consolidada $\mathrm{LRAC{-}4P}=0.3\mathrm{L}+0.2\mathrm{R}+0.2\mathrm{A}+0.3\mathrm{C}$. \textbf{Seis resultados clave:} (i) en enero las peores gerencias por herramienta fueron PLANTA (FTO 45\,\%), MEDIO AMBIENTE (3Q 39\,\%), MANTENIMIENTO (ACC 39\,\%) y SERV.\ TÉCNICOS (NMAP 36\,\%) ---tres de cuatro en VP OPERACIONES---; (ii) SUPPLY lidera el promedio anual con 69.71\,\% (ACC 78.12\,\%) pero su CV=8.37\,\% es 4.6$\times$ mayor que el de OPERACIONES (CV=1.80\,\%), virtualmente empatado con 69.70\,\%; (iii) la VP PROYECTOS promedia 68.59\,\% sobre sus siete indicadores y \textbf{su ACC se ubica en 61.12\,\%} (valle de 50\,\% en marzo); (iv) en promedio anual SUPPLY $>$ OPERACIONES $>$ PROYECTOS $>$ SHE, pero al cierre (abril) PROYECTOS lidera con 71.25\,\% y SUPPLY cae al último lugar con 68.98\,\%; (v) NMAP es la herramienta más débil corporativa (65.71\,\%) y el Pilar A el cuello de botella; (vi) sobre la escala de Hudson el sistema está en transición \emph{Calculativa$\to$Proactiva} y la prueba de Kruskal-Wallis ($H=1.32$, $p=0.724$) descarta diferencias significativas entre VPs.
 
-\textbf{El Plan de Acción Estratégico} (Sección 7) ataca cinco brechas mediante una hoja de ruta a 24 meses con tres horizontes y treinta y una acciones con KPI SMART, RACI, presupuesto y dependencias. Sus cuatro habilitadores son los módulos GAIATECH M1.0 (visión computacional EPP con YOLOv8 87.67\,\% mAP, agente Aecodito Minero n8n+Gemini, monitoreo estructural FPGA+LSTM-AE F1=0.961, dashboard ejecutivo en producción) \textbf{ya construidos por el postulante}: no son propuestas conceptuales sino activos desplegables desde el día 1. El \emph{business case} arroja \textbf{NPV S/ 1.21\,M base / S/ 3.81\,M optimista, IRR 343\,\% y payback en el mes 11}.
+\textbf{El Plan de Acción Estratégico} (Sección 7) ataca cinco brechas mediante una hoja de ruta a 24 meses con tres horizontes y treinta y una acciones con KPI SMART, RACI, presupuesto y dependencias. Sus cuatro habilitadores son los módulos GAIATECH M1.0 (visión computacional EPP con YOLOv8 87.67\,\% mAP, agente TOKI n8n+Gemini, monitoreo estructural FPGA+LSTM-AE F1=0.961, dashboard ejecutivo en producción) \textbf{ya construidos por el postulante}: no son propuestas conceptuales sino activos desplegables desde el día 1. El \emph{business case} arroja \textbf{NPV S/ 1.21\,M base / S/ 3.81\,M optimista, IRR 343\,\% y payback en el mes 11}.
 
 \newpage
 % =============================================================================
@@ -437,7 +437,7 @@ El plan se apoya en cuatro módulos GAIATECH M1.0 ---ya construidos, en producci
 \textbf{Módulo} & \textbf{Activo en producción} & \textbf{Métrica verificable} & \textbf{Pilares} & \textbf{Estado} \\
 \midrule
 \textbf{M1.A} & \textbf{Visión computacional EPP} (Gen+ Vision PDK + ConstEdge) & YOLOv8 sobre 14\,055 imágenes peruanas; \textbf{mAP@0.5 = 87.67\,\%}; \textbf{38 FPS} sostenidos en Jetson Orin Nano Super; 11 clases EPP & R · L & \textit{producción} \\
-\textbf{M1.B} & \textbf{Aecodito Minero} (n8n + Evolution API + Gemini Pro + Postgres pgvector) & Bot WhatsApp con \textbf{50 nodos n8n}, \textbf{10 herramientas} integradas, memoria persistente, procesa texto/audio/foto/PDF & L · A · C & \textit{producción} \\
+\textbf{M1.B} & \textbf{TOKI} (n8n + Evolution API + Gemini Pro + Postgres pgvector) & Bot WhatsApp con \textbf{50 nodos n8n}, \textbf{10 herramientas} integradas, memoria persistente, procesa texto/audio/foto/PDF & L · A · C & \textit{producción} \\
 \textbf{M1.C} & \textbf{GAIATECH VIGÍA} (FPGA Gowin GW1NR-9 + ESP32 + LoRa + LSTM-AE) & FFT en FPGA + autoencoder PyTorch \textbf{F1 = 0.961} en detección anomalías; latencia alerta \textbf{< 2\,s} vía WhatsApp; \textbf{2.º lugar AI Talent Demo Day 2026} & R & \textit{prototipo} \\
 \textbf{M1.D} & \textbf{Dashboard ejecutivo} Vision Pro PDK (Next.js 16 + Tailwind + VPS) & Single Pane of Glass rol-based; alertas sintéticas; reportes ejecutivos Gemini Pro; login httpOnly; deploy continuo & L · R · A · C & \textit{producción} \\
 \bottomrule
@@ -449,7 +449,7 @@ El plan se apoya en cuatro módulos GAIATECH M1.0 ---ya construidos, en producci
 \textbf{Mapeo módulo $\to$ acciones del plan:}
 \begin{itemize}\setlength\itemsep{1pt}
 \item \textbf{M1.A · Visión computacional EPP} habilita las acciones \emph{A-05} (verificación independiente CCV vía cámaras), \emph{A-12} (cobertura EPP $\geq$99\,\% en accesos y $\geq$97\,\% en obra) y \emph{A-25} (wearables vinculados al sistema visual).
-\item \textbf{M1.B · Aecodito Minero} habilita \emph{A-01} (medición 3Q VP SHE en tiempo real), \emph{A-02} (Tarjeta Verde digital), \emph{A-08} (cápsula semanal con quiz), \emph{A-10} (onboarding asistido), \emph{A-11} (plataforma RACS conversacional) y \emph{A-17} (BBS dirigido peer-to-peer).
+\item \textbf{M1.B · TOKI} habilita \emph{A-01} (medición 3Q VP SHE en tiempo real), \emph{A-02} (Tarjeta Verde digital), \emph{A-08} (cápsula semanal con quiz), \emph{A-10} (onboarding asistido), \emph{A-11} (plataforma RACS conversacional) y \emph{A-17} (BBS dirigido peer-to-peer).
 \item \textbf{M1.C · GAIATECH VIGÍA} habilita \emph{A-13} (monitoreo estructural relaves alineado al DS 034 art. 418--423) y eleva el Pilar R en zonas críticas estructurales.
 \item \textbf{M1.D · Dashboard ejecutivo} habilita \emph{A-06} (tablero ICAM corporativo), \emph{A-14} (Single Pane of Glass), \emph{A-15} (API IEM bidireccional), \emph{A-22} (ranking público mensual) y \emph{A-24} (predicción ML sobre base unificada).
 \end{itemize}
@@ -460,7 +460,7 @@ Los 17 elementos restantes del plan (cultural-normativo: A-03, A-04, A-07, A-09,
 \begin{itemize}\setlength\itemsep{1pt}
 \item Repositorio público en GitHub con el análisis estadístico reproducible.
 \item Demo interactivo Streamlit que replica el dashboard ejecutivo LRAC con los datos del caso.
-\item Video de 90 segundos mostrando el bot Aecodito Minero capturando un RACS en vivo y la detección EPP en producción.
+\item Video de 90 segundos mostrando el bot TOKI capturando un RACS en vivo y la detección EPP en producción.
 \item Slides de defensa oral y archivo Power BI .pbix descargable.
 \end{itemize}
 
@@ -474,7 +474,7 @@ Los enlaces actualizados se publican en la Sección \ref{sec:anexos}.
 
 \textbf{Acciones culturales y de liderazgo (Pilar L):}
 \begin{enumerate}
-\item \textbf{Pacto público del custodio (SHE).} El VP SHE firma y comunica un \emph{Pacto 3Q} en el que se compromete personalmente al cumplimiento del 90\,\% de 3Q dentro de su propia VP en los próximos 60 días. KPI: 3Q SHE $\geq 90\,\%$ a junio 2026 (medido por bot Aecodito en planta).
+\item \textbf{Pacto público del custodio (SHE).} El VP SHE firma y comunica un \emph{Pacto 3Q} en el que se compromete personalmente al cumplimiento del 90\,\% de 3Q dentro de su propia VP en los próximos 60 días. KPI: 3Q SHE $\geq 90\,\%$ a junio 2026 (medido por bot TOKI en planta).
 \item \textbf{Tarjetas verdes ampliadas.} Re-lanzamiento del \emph{Stop Work Authority} con feedback público de la dirección (al menos un caso emblemático visibilizado en \emph{toolbox talk} corporativo). Responsable: VP SHE + Comunicaciones. Meta: 1\,000 tarjetas verdes válidas en el trimestre, $\geq$70\,\% con foto + GPS.
 \item \textbf{Rondas 6-4-2 medidas digitalmente.} Geofence ligero (app móvil) que valide horas en campo por nivel jerárquico. KPI: 95\,\% de gerentes cumpliendo 2\,h/día.
 \end{enumerate}
@@ -506,7 +506,7 @@ Los enlaces actualizados se publican en la Sección \ref{sec:anexos}.
 
 \textbf{Acciones digitales:}
 \begin{enumerate}\setcounter{enumi}{10}
-\item \textbf{Plataforma RACS conversacional (Aecodito Minero).} Bot WhatsApp + n8n + Gemini Pro que guía al operador en el reporte (texto, foto, audio, ubicación). Clasificación automática (incumplimiento, cuasi-accidente, idea de mejora) con escalamiento por severidad y push a IEM. KPI: 2 reportes válidos / trabajador / mes; $\geq$90\,\% con foto+GPS.
+\item \textbf{Plataforma RACS conversacional (TOKI).} Bot WhatsApp + n8n + Gemini Pro que guía al operador en el reporte (texto, foto, audio, ubicación). Clasificación automática (incumplimiento, cuasi-accidente, idea de mejora) con escalamiento por severidad y push a IEM. KPI: 2 reportes válidos / trabajador / mes; $\geq$90\,\% con foto+GPS.
 \item \textbf{Visión computacional EPP en accesos (ConstEdge + Gen+ Vision PDK).} YOLOv8 con \emph{mAP@0.5 = 87.67\,\%} sobre dataset peruano de 14\,055 imágenes (alineado a CGALS-YOLO 89.4\,\%, Huang \& Huang, 2026). Notificación al supervisor en menos de 30\,s. KPI: A-01 cumplimiento EPP en acceso $\geq$99\,\%, A-02 obra $\geq$97\,\%.
 \item \textbf{Monitoreo estructural en relaves (GAIATECH VIGÍA).} FFT en FPGA Gowin GW1NR-9 + ESP32 + LSTM--Autoencoder (F1=0.961). Aplica directamente al Caso 12 y refuerza el Pilar R en el control crítico \emph{tailings/dam}. Cumple Resolución 122-2024-OS/CD y DS 034-2023-EM art.~418--423.
 \item \textbf{Tablero ejecutivo SHE \emph{Single Pane of Glass}}: LRAC Health Score + drill-down por gerencia + tres patrones detectados semana a semana (Gemini Pro). Acceso rol-based para VPs, gerencias y auditor externo. Disponible en VPS corporativo.
@@ -549,7 +549,7 @@ Los enlaces actualizados se publican en la Sección \ref{sec:anexos}.
 
 \textbf{Acciones de aprendizaje:}
 \begin{enumerate}\setcounter{enumi}{27}
-\item \textbf{Universidad LRAC interna} (Aecodito Minero + LMS) con rutas formativas por rol y certificación digital.
+\item \textbf{Universidad LRAC interna} (TOKI + LMS) con rutas formativas por rol y certificación digital.
 \item \textbf{Programa de \emph{lecciones aprendidas} cruzado con sitios MMG} (Las Bambas, Rosebery, Dugald River, Kinsevere).
 \item \textbf{Medición PSCI anual} (Siuta et al., 2022) como complemento cuantitativo al LRAC.
 \item \textbf{Evaluación cultural cualitativa} cada 12 meses con encuesta de safety climate validada.
@@ -655,7 +655,7 @@ Los cinco anexos siguientes están públicamente accesibles al jurado y son la e
 \midrule
 \textbf{A1} & Repositorio GitHub público & Código Python reproducible del análisis estadístico, scripts de visualización y plantilla LaTeX del informe. Licencia MIT. \emph{URL pendiente publicar en repo final.} \\
 \textbf{A2} & Demo Streamlit interactivo & Replica el dashboard ejecutivo LRAC sobre los datos del caso Mina Juanita: filtros VP/Gerencia/Mes, simulador del plan de acción con sliders por pilar, comparación contra benchmarks ICMM 2024. \emph{URL pendiente al desplegar en Streamlit Cloud.} \\
-\textbf{A3} & Video 90s GAIATECH M1.0 & Demostración del bot Aecodito Minero capturando un RACS en vivo (texto + foto + voz), detección EPP YOLOv8 sobre cámara y dashboard ejecutivo Vision Pro PDK con alertas. Subido a YouTube unlisted. \emph{URL pendiente.} \\
+\textbf{A3} & Video 90s GAIATECH M1.0 & Demostración del bot TOKI capturando un RACS en vivo (texto + foto + voz), detección EPP YOLOv8 sobre cámara y dashboard ejecutivo Vision Pro PDK con alertas. Subido a YouTube unlisted. \emph{URL pendiente.} \\
 \textbf{A4} & Slides 10 min sustentación & Deck Slidev (HTML público + PDF descargable) para eventual defensa oral. \emph{URL pendiente.} \\
 \textbf{A5} & Archivo Power BI .pbix & Modelo tabular completo del Excel con medidas DAX (Pilar L/R/A/C, LRAC-4P, Score compuesto), visuales matriz, heatmap pilares, evolución mensual y slicers. Adjunto al envío y enlazado en Drive público. \\
 \bottomrule
@@ -668,7 +668,7 @@ Cada anexo está alineado a uno de los módulos GAIATECH M1.0 descritos en la Se
 \begin{itemize}\setlength\itemsep{1pt}
 \item A1 (repo) demuestra ingeniería de software reproducible.
 \item A2 (Streamlit) prefigura el M1.D (dashboard ejecutivo) ya en producción.
-\item A3 (video) muestra simultáneamente M1.A (visión EPP), M1.B (Aecodito) y M1.D (dashboard).
+\item A3 (video) muestra simultáneamente M1.A (visión EPP), M1.B (TOKI) y M1.D (dashboard).
 \item A4 (slides) condensa la narrativa para sustentación oral.
 \item A5 (Power BI) entrega al área un activo inmediatamente reutilizable.
 \end{itemize}
