@@ -1,0 +1,118 @@
+{
+  "name": "LRAC-031 · Reporte semanal ejecutivo Gemini Pro",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": { "interval": [{ "field": "cronExpression", "expression": "0 6 * * 1" }] }
+      },
+      "id": "node-001-cron",
+      "name": "Cron · lunes 6:00 hora Perú",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [-1800, 0]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH ultima_sem AS (SELECT * FROM lrac_metricas_diarias WHERE fecha BETWEEN NOW() - INTERVAL '7 days' AND NOW()), prev_sem AS (SELECT * FROM lrac_metricas_diarias WHERE fecha BETWEEN NOW() - INTERVAL '14 days' AND NOW() - INTERVAL '7 days') SELECT json_build_object('lrac_actual', (SELECT AVG(lrac_4p) FROM ultima_sem), 'lrac_previo', (SELECT AVG(lrac_4p) FROM prev_sem), 'racs_creados', (SELECT COUNT(*) FROM lrac_racs WHERE creado >= NOW() - INTERVAL '7 days'), 'racs_cerrados', (SELECT COUNT(*) FROM lrac_racs WHERE cerrado >= NOW() - INTERVAL '7 days' AND estado = 'CERRADO_VERIFICADO_IA'), 'racs_reabiertos', (SELECT COUNT(*) FROM lrac_racs WHERE reabierto >= NOW() - INTERVAL '7 days'), 'detecciones_epp', (SELECT COUNT(*) FROM lrac_detecciones WHERE timestamp >= NOW() - INTERVAL '7 days'), 'gerencias_bajas', (SELECT json_agg(json_build_object('vp', vp, 'gerencia', gerencia, 'lrac_4p', lrac_4p) ORDER BY lrac_4p LIMIT 3) FROM lrac_metricas_semanal), 'patrones_recurrentes', (SELECT json_agg(json_build_object('tipo', tipo, 'count', cnt) ORDER BY cnt DESC LIMIT 3) FROM (SELECT tipo, COUNT(*) AS cnt FROM lrac_racs WHERE creado >= NOW() - INTERVAL '7 days' GROUP BY tipo) p)) AS resumen;"
+      },
+      "id": "node-002-pg-aggregate",
+      "name": "Postgres · agregar datos últimos 7 días",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [-1500, 0]
+    },
+    {
+      "parameters": {
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent",
+        "method": "POST",
+        "sendQuery": true,
+        "queryParameters": { "parameters": [{ "name": "key", "value": "={{ $env.GEMINI_API_KEY }}" }] },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contents\": [{\n    \"parts\": [{ \"text\": \"Eres VP SHE senior con 20 años en mineria peruana. A partir de estos datos de la semana pasada de Mina Juanita S.A., produce un reporte ejecutivo de 1 página (markdown) dirigido a la junta directiva. Tono: directo, ejecutivo, sin jerga. Estructura: RESUMEN (3 frases con cifras), QUE FUNCIONO (top 3 logros), QUE NO FUNCIONO (top 3 alertas), RECOMENDACIONES (3 acciones), TENDENCIA (proyeccion 4 sem). Datos: {{ JSON.stringify($json.resumen) }}\" }]\n  }],\n  \"generationConfig\": { \"temperature\": 0.2 }\n}"
+      },
+      "id": "node-003-gemini-reporte",
+      "name": "Gemini Pro · narrativa ejecutiva",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-1200, 0]
+    },
+    {
+      "parameters": {
+        "jsCode": "const md = $input.first().json.candidates[0].content.parts[0].text;\nconst fechaIso = new Date().toISOString().slice(0, 10);\nconst semana = `Semana del ${new Date(Date.now() - 7*86400000).toISOString().slice(0,10)} al ${fechaIso}`;\nconst markdownCompleto = `# Reporte ejecutivo SHE · ${semana}\\n\\n${md}\\n\\n---\\n\\n_Generado automáticamente por LRAC-031 · Gemini Pro · ${fechaIso}_`;\nreturn [{ json: { markdown: markdownCompleto, fecha: fechaIso, semana } }];"
+      },
+      "id": "node-004-format",
+      "name": "Formatear markdown",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-900, 0]
+    },
+    {
+      "parameters": {
+        "url": "{{ $env.PDFKIT_URL }}/md-to-pdf",
+        "method": "POST",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={ \"markdown\": {{ JSON.stringify($json.markdown) }}, \"theme\": \"mmg-lrac\", \"filename\": \"reporte-she-{{ $json.fecha }}.pdf\" }"
+      },
+      "id": "node-005-pdfkit",
+      "name": "PDFkit · render PDF con plantilla MMG",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-600, 0]
+    },
+    {
+      "parameters": {
+        "operation": "upload",
+        "name": "=Reporte SHE · {{ $json.semana }}.pdf",
+        "folderId": "{{ $env.GDRIVE_REPORTES_SHE }}",
+        "binaryData": true,
+        "binaryPropertyName": "data"
+      },
+      "id": "node-006-drive",
+      "name": "Google Drive · archivar histórico",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [-300, 0]
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $env.VP_SHE_EMAIL }},{{ $env.VP_OPS_EMAIL }},{{ $env.VP_PROY_EMAIL }},{{ $env.VP_SUPPLY_EMAIL }}",
+        "subject": "=Reporte SHE semanal · {{ $json.semana }}",
+        "emailType": "html",
+        "message": "=Estimad@s VPs,<br><br>Adjunto el reporte ejecutivo SHE de la semana pasada generado automáticamente por LRAC-031.<br><br>{{ $json.markdown }}<br><br>Para drill-down, ver el dashboard ejecutivo: <a href=\"https://lasbambas-lrac-emanuel.streamlit.app\">link</a>.<br><br>--<br>Aecodito · LRAC-031",
+        "attachments": "data"
+      },
+      "id": "node-007-gmail",
+      "name": "Gmail · enviar a VPs",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO lrac_reportes_ejecutivos (fecha, semana, markdown, pdf_drive_id, destinatarios) VALUES ($1, $2, $3, $4, $5);"
+      },
+      "id": "node-008-pg-log",
+      "name": "Postgres · log reporte",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [300, 0]
+    }
+  ],
+  "connections": {
+    "Cron · lunes 6:00 hora Perú": { "main": [[{ "node": "Postgres · agregar datos últimos 7 días", "type": "main", "index": 0 }]] },
+    "Postgres · agregar datos últimos 7 días": { "main": [[{ "node": "Gemini Pro · narrativa ejecutiva", "type": "main", "index": 0 }]] },
+    "Gemini Pro · narrativa ejecutiva": { "main": [[{ "node": "Formatear markdown", "type": "main", "index": 0 }]] },
+    "Formatear markdown": { "main": [[{ "node": "PDFkit · render PDF con plantilla MMG", "type": "main", "index": 0 }]] },
+    "PDFkit · render PDF con plantilla MMG": { "main": [[{ "node": "Google Drive · archivar histórico", "type": "main", "index": 0 }]] },
+    "Google Drive · archivar histórico": { "main": [[{ "node": "Gmail · enviar a VPs", "type": "main", "index": 0 }]] },
+    "Gmail · enviar a VPs": { "main": [[{ "node": "Postgres · log reporte", "type": "main", "index": 0 }]] }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" },
+  "meta": { "workflow_id": "LRAC-031", "description": "Reporte semanal ejecutivo Gemini Pro a VPs · cada lunes 6:00 · ahorra 6-10 h analista", "author": "Emanuel Edgar Ancco Guaygua" },
+  "tags": [{ "name": "lrac" }, { "name": "gaiatech-m1" }, { "name": "M1.D" }]
+}

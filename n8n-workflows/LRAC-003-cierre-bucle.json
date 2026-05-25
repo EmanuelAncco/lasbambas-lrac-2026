@@ -1,0 +1,207 @@
+{
+  "name": "LRAC-003 · Cierre de bucle con verificación IA",
+  "nodes": [
+    {
+      "parameters": { "httpMethod": "POST", "path": "lrac/cierre/incoming", "responseMode": "responseNode" },
+      "id": "node-001-trigger",
+      "name": "Webhook · supervisor cierra RACS",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-1800, 0],
+      "webhookId": "lrac003"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT id, tipo, severidad, fatal_risk, foto_url AS foto_original, payload_ia FROM lrac_racs WHERE id = $1;",
+        "options": {}
+      },
+      "id": "node-002-pg-racs",
+      "name": "Postgres · cargar RACS original",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [-1500, 0]
+    },
+    {
+      "parameters": {
+        "url": "={{ $env.EVOLUTION_URL }}/message/sendText/{{ $env.EVOLUTION_INSTANCE }}",
+        "method": "POST",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={ \"number\": \"{{ $json.body.supervisor_telefono }}\", \"text\": \"Para cerrar RACS #{{ $json.id }} envíame la foto de evidencia.\" }"
+      },
+      "id": "node-003-pedir-foto",
+      "name": "WhatsApp · pedir foto evidencia",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-1200, 0]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            { "conditions": { "string": [{ "value1": "={{ $json.tipo }}", "operation": "contains", "value2": "EPP" }] }, "renameOutput": true, "outputKey": "epp" },
+            { "conditions": { "string": [{ "value1": "={{ $json.tipo }}", "operation": "contains", "value2": "grieta" }] }, "renameOutput": true, "outputKey": "grieta" }
+          ],
+          "fallbackOutput": "generico"
+        }
+      },
+      "id": "node-004-router-modelo",
+      "name": "Router · modelo según tipo",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [-900, 0]
+    },
+    {
+      "parameters": {
+        "url": "{{ $env.FASTAPI_INFER_URL }}/infer/epp",
+        "method": "POST",
+        "sendBody": true,
+        "bodyContentType": "multipart-form-data",
+        "bodyParameters": { "parameters": [{ "name": "image_url", "value": "={{ $json.foto_cierre_url }}" }] }
+      },
+      "id": "node-005-yolo",
+      "name": "YOLOv8 · validar EPP",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-600, -200]
+    },
+    {
+      "parameters": {
+        "url": "{{ $env.FASTAPI_INFER_URL }}/infer/cracks",
+        "method": "POST",
+        "sendBody": true,
+        "bodyContentType": "multipart-form-data",
+        "bodyParameters": { "parameters": [{ "name": "image_url", "value": "={{ $json.foto_cierre_url }}" }] }
+      },
+      "id": "node-006-vit",
+      "name": "ViT · clasificar grieta",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-600, 0]
+    },
+    {
+      "parameters": {
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent",
+        "method": "POST",
+        "sendQuery": true,
+        "queryParameters": { "parameters": [{ "name": "key", "value": "={{ $env.GEMINI_API_KEY }}" }] },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contents\": [{\n    \"parts\": [\n      { \"text\": \"Compara estas dos fotos. La primera muestra una condicion sub-estandar reportada (tipo: {{ $json.tipo }}). La segunda es la foto de evidencia del cierre. ¿La condicion fue corregida correctamente? Devuelve JSON: { aprobado: bool, confidence: 0-1, observacion: string }. Solo JSON.\" },\n      { \"inline_data\": { \"mime_type\": \"image/jpeg\", \"data\": \"{{ $json.foto_original_b64 }}\" }},\n      { \"inline_data\": { \"mime_type\": \"image/jpeg\", \"data\": \"{{ $json.foto_cierre_b64 }}\" }}\n    ]\n  }],\n  \"generationConfig\": { \"response_mime_type\": \"application/json\", \"temperature\": 0.0 }\n}"
+      },
+      "id": "node-007-gemini-vision",
+      "name": "Gemini Vision · comparar antes/después",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-600, 200]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Decisión de cierre\nconst inferencia = $input.first().json;\nconst confidence = inferencia.confidence || 0;\nconst aprobado = inferencia.aprobado === true && confidence >= 0.75;\n\nreturn [{ json: { aprobado, confidence, observacion: inferencia.observacion, racs_id: $('Postgres · cargar RACS original').first().json.id } }];"
+      },
+      "id": "node-008-decision",
+      "name": "Decisión · ¿aprobado?",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-300, 0]
+    },
+    {
+      "parameters": {
+        "conditions": { "boolean": [{ "value1": "={{ $json.aprobado }}", "value2": true }] }
+      },
+      "id": "node-009-if-aprobado",
+      "name": "¿Aprobado?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE lrac_racs SET estado = 'CERRADO_VERIFICADO_IA', confidence_cierre = $2, observacion_ia = $3, cerrado = NOW() WHERE id = $1;"
+      },
+      "id": "node-010-pg-cerrar",
+      "name": "Postgres · cerrar RACS verificado",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [300, -100]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE lrac_racs SET estado = 'REABIERTO_POR_IA', confidence_cierre = $2, observacion_ia = $3, reabierto = NOW() WHERE id = $1; INSERT INTO lrac_ia_alertas (racs_id, motivo, confidence, creado) VALUES ($1, $3, $2, NOW());"
+      },
+      "id": "node-011-pg-reabrir",
+      "name": "Postgres · reabrir RACS",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [300, 100]
+    },
+    {
+      "parameters": {
+        "url": "={{ $env.EVOLUTION_URL }}/message/sendText/{{ $env.EVOLUTION_INSTANCE }}",
+        "method": "POST",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={ \"number\": \"{{ $json.supervisor_telefono }}\", \"text\": \"⚠ RACS #{{ $json.racs_id }} REABIERTO. La IA observa: {{ $json.observacion }}. Confidence: {{ $json.confidence }}. Necesito otra foto.\" }"
+      },
+      "id": "node-012-notify-reapertura",
+      "name": "WhatsApp · notificar reapertura",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [600, 100]
+    },
+    {
+      "parameters": {
+        "url": "={{ $env.EVOLUTION_URL }}/message/sendText/{{ $env.EVOLUTION_INSTANCE }}",
+        "method": "POST",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={ \"number\": \"{{ $json.supervisor_telefono }}\", \"text\": \"✅ RACS #{{ $json.racs_id }} cerrado y verificado por IA (confidence {{ $json.confidence }}).\" }"
+      },
+      "id": "node-013-notify-cierre",
+      "name": "WhatsApp · confirmar cierre",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [600, -100]
+    },
+    {
+      "parameters": { "respondWith": "text", "responseBody": "OK" },
+      "id": "node-014-respond",
+      "name": "Respond OK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [900, 0]
+    }
+  ],
+  "connections": {
+    "Webhook · supervisor cierra RACS": { "main": [[{ "node": "Postgres · cargar RACS original", "type": "main", "index": 0 }]] },
+    "Postgres · cargar RACS original": { "main": [[{ "node": "WhatsApp · pedir foto evidencia", "type": "main", "index": 0 }, { "node": "Router · modelo según tipo", "type": "main", "index": 0 }]] },
+    "Router · modelo según tipo": {
+      "main": [
+        [{ "node": "YOLOv8 · validar EPP", "type": "main", "index": 0 }],
+        [{ "node": "ViT · clasificar grieta", "type": "main", "index": 0 }],
+        [{ "node": "Gemini Vision · comparar antes/después", "type": "main", "index": 0 }]
+      ]
+    },
+    "YOLOv8 · validar EPP": { "main": [[{ "node": "Decisión · ¿aprobado?", "type": "main", "index": 0 }]] },
+    "ViT · clasificar grieta": { "main": [[{ "node": "Decisión · ¿aprobado?", "type": "main", "index": 0 }]] },
+    "Gemini Vision · comparar antes/después": { "main": [[{ "node": "Decisión · ¿aprobado?", "type": "main", "index": 0 }]] },
+    "Decisión · ¿aprobado?": { "main": [[{ "node": "¿Aprobado?", "type": "main", "index": 0 }]] },
+    "¿Aprobado?": {
+      "main": [
+        [{ "node": "Postgres · cerrar RACS verificado", "type": "main", "index": 0 }],
+        [{ "node": "Postgres · reabrir RACS", "type": "main", "index": 0 }]
+      ]
+    },
+    "Postgres · cerrar RACS verificado": { "main": [[{ "node": "WhatsApp · confirmar cierre", "type": "main", "index": 0 }]] },
+    "Postgres · reabrir RACS": { "main": [[{ "node": "WhatsApp · notificar reapertura", "type": "main", "index": 0 }]] },
+    "WhatsApp · confirmar cierre": { "main": [[{ "node": "Respond OK", "type": "main", "index": 0 }]] },
+    "WhatsApp · notificar reapertura": { "main": [[{ "node": "Respond OK", "type": "main", "index": 0 }]] }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" },
+  "meta": { "workflow_id": "LRAC-003", "description": "Cierre de bucle de RACS con verificación visual IA · Mina Juanita S.A.", "author": "Emanuel Edgar Ancco Guaygua" },
+  "tags": [{ "name": "lrac" }, { "name": "gaiatech-m1" }, { "name": "M1.B" }, { "name": "M1.A" }]
+}

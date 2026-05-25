@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Caso 13 LRAC · Innovadores en Acción 2026 · Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: linear-gradient(135deg,#0f0f10 0%,#1a1a1c 100%);
+  color: #e8e8ea;
+  padding: 32px;
+  min-height: 100vh;
+}
+.container { max-width: 1400px; margin: 0 auto; }
+header {
+  border-left: 4px solid #C8102E;
+  padding-left: 20px;
+  margin-bottom: 32px;
+}
+header h1 { font-size: 28px; font-weight: 700; color: #fff; letter-spacing: -0.5px; }
+header .sub { color: #aaa; font-size: 14px; margin-top: 4px; }
+header .deadline { color: #ff6b6b; font-size: 13px; margin-top: 8px; font-weight: 600; }
+
+/* GRID DE METRICAS */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.metric-card {
+  background: #1f1f22;
+  border: 1px solid #2c2c30;
+  border-radius: 12px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+.metric-card::before {
+  content: "";
+  position: absolute;
+  top:0; left:0; right:0; height: 3px;
+  background: var(--accent, #C8102E);
+}
+.metric-card .label {
+  font-size: 11px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 8px;
+}
+.metric-card .value {
+  font-size: 32px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -1px;
+}
+.metric-card .sub {
+  font-size: 12px;
+  color: #999;
+  margin-top: 6px;
+}
+.metric-card.green { --accent: #2E7D32; }
+.metric-card.orange { --accent: #FF7F0E; }
+.metric-card.blue { --accent: #1F77B4; }
+.metric-card.red { --accent: #C8102E; }
+
+/* SECCIONES */
+section {
+  background: #1f1f22;
+  border: 1px solid #2c2c30;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+section h2 {
+  font-size: 18px;
+  color: #fff;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+section h2::before {
+  content: "";
+  width: 4px;
+  height: 18px;
+  background: #C8102E;
+  display: inline-block;
+}
+
+/* PROGRESO ITERACIONES */
+.iter-grid {
+  display: grid;
+  grid-template-columns: repeat(5,1fr);
+  gap: 12px;
+}
+@media (max-width: 800px) { .iter-grid { grid-template-columns: repeat(2,1fr); } }
+.iter-card {
+  background: #2a2a2e;
+  border-radius: 8px;
+  padding: 14px;
+  position: relative;
+  border: 1px solid #38383c;
+}
+.iter-card.done { border-color: #2E7D32; }
+.iter-card.active { border-color: #FF7F0E; box-shadow: 0 0 12px rgba(255,127,14,0.3); }
+.iter-card .iter-num {
+  font-size: 11px;
+  color: #888;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+.iter-card .iter-title {
+  font-size: 13px;
+  color: #fff;
+  font-weight: 600;
+  margin-top: 4px;
+  line-height: 1.3;
+}
+.iter-card .iter-date {
+  font-size: 11px;
+  color: #777;
+  margin-top: 8px;
+}
+.iter-card .iter-status {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 700;
+}
+.iter-card.done .iter-status { background: #2E7D32; color: white; }
+.iter-card.active .iter-status { background: #FF7F0E; color: white; }
+.iter-card.pending .iter-status { background: #444; color: #ccc; }
+
+/* HALLAZGOS */
+.hallazgos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px,1fr));
+  gap: 12px;
+}
+.hallazgo {
+  background: #2a2a2e;
+  border-left: 3px solid var(--c, #C8102E);
+  padding: 12px 16px;
+  border-radius: 6px;
+}
+.hallazgo .num { font-size: 11px; color: #888; font-weight: 600; }
+.hallazgo .title {
+  font-size: 13px;
+  color: #fff;
+  font-weight: 600;
+  margin-top: 4px;
+}
+.hallazgo .data {
+  font-size: 18px;
+  color: #fff;
+  font-weight: 800;
+  margin-top: 6px;
+}
+.hallazgo .data .small { font-size: 12px; color: #aaa; font-weight: 400; }
+
+/* TABLAS */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+th, td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid #2c2c30;
+}
+th { color: #888; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+td { color: #ddd; }
+.right { text-align: right; }
+.bold { font-weight: 700; color: #fff; }
+
+/* CHART CONTAINERS */
+.chart-container {
+  position: relative;
+  height: 320px;
+  margin-top: 12px;
+}
+.chart-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+@media (max-width: 900px) { .chart-grid { grid-template-columns: 1fr; } }
+
+/* BADGES */
+.badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  margin-right: 6px;
+}
+.badge.red { background: rgba(200,16,46,0.15); color: #ff8a99; }
+.badge.green { background: rgba(46,125,50,0.15); color: #7ed18a; }
+.badge.orange { background: rgba(255,127,14,0.15); color: #ffb066; }
+.badge.blue { background: rgba(31,119,180,0.15); color: #6cb8e8; }
+.badge.gray { background: rgba(255,255,255,0.08); color: #aaa; }
+
+/* FOOTER */
+footer {
+  text-align: center;
+  color: #666;
+  font-size: 12px;
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid #2c2c30;
+}
+
+ul.kpi-list { list-style: none; }
+ul.kpi-list li {
+  padding: 8px 0;
+  border-bottom: 1px solid #2c2c30;
+  font-size: 13px;
+  color: #ddd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+ul.kpi-list li:last-child { border-bottom: none; }
+ul.kpi-list li .kpi-label { color: #999; font-size: 12px; }
+ul.kpi-list li .kpi-val { color: #fff; font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>Caso 13 LRAC · Diagnóstico y Gobernanza del Sistema LRAC</h1>
+  <div class="sub">Mina Juanita S.A. · MMG Las Bambas · Innovadores en Acción 2026 · Talentos de Cobre</div>
+  <div class="deadline">⏰ Deadline: domingo 24 de mayo 2026 — 23:59 hora Perú · Envío: Peru.Recruitment@MMG.COM</div>
+</header>
+
+<!-- ================= METRICAS CLAVE ================= -->
+<div class="metrics-grid">
+  <div class="metric-card red">
+    <div class="label">LRAC global Mina Juanita</div>
+    <div class="value">55.3%</div>
+    <div class="sub">Cumplimiento global de captura (Excel "Promedio")</div>
+  </div>
+  <div class="metric-card orange">
+    <div class="label">LRAC-4P corporativo</div>
+    <div class="value">69.2%</div>
+    <div class="sub">Promedio ponderado ene-abr 2026</div>
+  </div>
+  <div class="metric-card green">
+    <div class="label">Meta a 24 meses</div>
+    <div class="value">80%</div>
+    <div class="sub">Con CV &lt; 5% inter-VP</div>
+  </div>
+  <div class="metric-card blue">
+    <div class="label">NPV plan (base)</div>
+    <div class="value">S/ 1.21M</div>
+    <div class="sub">IRR 343% · Payback mes 11</div>
+  </div>
+  <div class="metric-card red">
+    <div class="label">Pilar más débil corporativo</div>
+    <div class="value">NMAP</div>
+    <div class="sub">65.71% (Aprendizaje)</div>
+  </div>
+  <div class="metric-card orange">
+    <div class="label">Bibliografía MDPI</div>
+    <div class="value">40+</div>
+    <div class="sub">Papers archivados con APA 7</div>
+  </div>
+</div>
+
+<!-- ================= PROGRESO 5 ITERACIONES ================= -->
+<section>
+  <h2>Progreso de las 5 iteraciones</h2>
+  <div class="iter-grid">
+    <div class="iter-card done">
+      <div class="iter-status">DONE</div>
+      <div class="iter-num">ITER 1</div>
+      <div class="iter-title">PDF v1 base · 21 pp · 10 figuras · 30 refs APA</div>
+      <div class="iter-date">Mar 20 mayo · cerrada</div>
+    </div>
+    <div class="iter-card done">
+      <div class="iter-status">DONE</div>
+      <div class="iter-num">ITER 2</div>
+      <div class="iter-title">Estadística inferencial + Plan ejecutable + ROI + Gantt</div>
+      <div class="iter-date">Mar 20 / Mié 21 · cerrada</div>
+    </div>
+    <div class="iter-card active">
+      <div class="iter-status">NEXT</div>
+      <div class="iter-num">ITER 3</div>
+      <div class="iter-title">Repo GitHub público + Demo Streamlit deployada</div>
+      <div class="iter-date">Jue 22 mayo</div>
+    </div>
+    <div class="iter-card pending">
+      <div class="iter-status">TODO</div>
+      <div class="iter-num">ITER 4</div>
+      <div class="iter-title">Video 90s GAIATECH + Slides defensa 10 min</div>
+      <div class="iter-date">Vie 23 mayo</div>
+    </div>
+    <div class="iter-card pending">
+      <div class="iter-status">TODO</div>
+      <div class="iter-num">ITER 5</div>
+      <div class="iter-title">Power BI .pbix + Refinamiento PDF + ENVÍO</div>
+      <div class="iter-date">Sáb 24 mayo</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= HALLAZGOS CLAVE ================= -->
+<section>
+  <h2>Los 6 hallazgos clave del análisis</h2>
+  <div class="hallazgos">
+    <div class="hallazgo" style="--c:#C8102E">
+      <div class="num">HALLAZGO 1</div>
+      <div class="title">Peores gerencias enero 2026 por herramienta</div>
+      <div class="data">
+        FTO: PLANTA <span class="small">(45%)</span> · 3Q: MEDIO AMBIENTE <span class="small">(39%)</span><br>
+        ACC: MANTENIMIENTO <span class="small">(39%)</span> · NMAP: SERV. TÉCNICOS <span class="small">(36%)</span>
+      </div>
+    </div>
+    <div class="hallazgo" style="--c:#FF7F0E">
+      <div class="num">HALLAZGO 2</div>
+      <div class="title">VP con LRAC-4P más alto anual</div>
+      <div class="data">
+        SUPPLY <span class="small">69.71% · ACC 78.12%</span><br>
+        <span class="small">Pero CV=8.37% inestable vs OPERACIONES CV=1.80%</span>
+      </div>
+    </div>
+    <div class="hallazgo" style="--c:#1F77B4">
+      <div class="num">HALLAZGO 3</div>
+      <div class="title">VP PROYECTOS</div>
+      <div class="data">
+        Promedio general <span class="small">68.59%</span> · ACC <span class="small">61.12%</span><br>
+        <span class="small">Valle marzo 50% — cierre fiscal</span>
+      </div>
+    </div>
+    <div class="hallazgo" style="--c:#2E7D32">
+      <div class="num">HALLAZGO 4</div>
+      <div class="title">Ranking LRAC-4P por VP</div>
+      <div class="data">
+        Anual ↑ SUPPLY · ↓ SHE <span class="small">(brecha 1.14pp)</span><br>
+        Cierre ABR ↑ PROYECTOS 71.25% · ↓ SUPPLY 68.98%
+      </div>
+    </div>
+    <div class="hallazgo" style="--c:#C8102E">
+      <div class="num">HALLAZGO 5</div>
+      <div class="title">Cuello de botella corporativo</div>
+      <div class="data">
+        NMAP 65.71% <span class="small">(Pilar A más débil)</span><br>
+        Mayor variabilidad inter-VP: Pilar C (σ=3.83pp)
+      </div>
+    </div>
+    <div class="hallazgo" style="--c:#FF7F0E">
+      <div class="num">HALLAZGO 6</div>
+      <div class="title">Diagnóstico cultural Hudson</div>
+      <div class="data">
+        Frontera <span class="small">Calculativa → Proactiva</span><br>
+        DuPont Bradley: <span class="small">Dependiente</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ESTADISTICA INFERENCIAL ================= -->
+<section>
+  <h2>ITER 2A · Estadística inferencial (refuerzo cuantitativo)</h2>
+  <div class="chart-grid">
+    <div>
+      <h3 style="font-size:13px; color:#aaa; margin-bottom:8px;">Score compuesto S = μ − σ (premia estabilidad)</h3>
+      <div class="chart-container"><canvas id="chartScore"></canvas></div>
+    </div>
+    <div>
+      <h3 style="font-size:13px; color:#aaa; margin-bottom:8px;">Tendencia Mann-Kendall por VP (τ)</h3>
+      <div class="chart-container"><canvas id="chartMK"></canvas></div>
+    </div>
+  </div>
+
+  <div style="margin-top:24px;">
+    <table>
+      <tr><th>Test</th><th class="right">Estadístico</th><th class="right">p-value</th><th>Conclusión</th></tr>
+      <tr><td>Kruskal-Wallis (4 VPs)</td><td class="right bold">H = 1.32</td><td class="right">0.7237</td><td><span class="badge gray">NO rechazo H₀</span> sin diferencia significativa entre VPs</td></tr>
+      <tr><td>Dunn (Bonferroni)</td><td class="right">6 comparaciones</td><td class="right">todas p ≥ 1.0</td><td><span class="badge gray">ninguna par sig.</span></td></tr>
+      <tr><td>Score compuesto</td><td class="right bold">k = 1</td><td class="right">—</td><td><span class="badge red">ranking se INVIERTE</span> OPS #1, SUPPLY #4</td></tr>
+      <tr><td>Shewhart I-Chart</td><td class="right">UCL/LCL ±3σ</td><td class="right">—</td><td><span class="badge orange">bajo control técnico</span> pero centerline 69.17% bajo</td></tr>
+      <tr><td>Mann-Kendall OPERACIONES</td><td class="right bold">τ = −0.667</td><td class="right">0.333</td><td><span class="badge red">tendencia decreciente</span> alarma temprana</td></tr>
+      <tr><td>Correlación 7×7</td><td class="right">máx |r| = 0.30</td><td class="right">—</td><td><span class="badge green">herramientas independientes</span> índice 4P bien diseñado</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ================= PLAN EJECUTABLE ================= -->
+<section>
+  <h2>ITER 2B · Plan ejecutable y business case</h2>
+  <div class="chart-grid">
+    <div>
+      <h3 style="font-size:13px; color:#aaa; margin-bottom:8px;">Distribución de las 31 acciones por horizonte</h3>
+      <div class="chart-container"><canvas id="chartAcciones"></canvas></div>
+    </div>
+    <div>
+      <h3 style="font-size:13px; color:#aaa; margin-bottom:8px;">Presupuesto acumulado 24 meses (S/.)</h3>
+      <div class="chart-container"><canvas id="chartPresupuesto"></canvas></div>
+    </div>
+  </div>
+
+  <div class="metrics-grid" style="margin-top:24px;">
+    <div class="metric-card green">
+      <div class="label">NPV base (10% anual)</div>
+      <div class="value">S/ 1.21M</div>
+      <div class="sub">Beneficios anuales S/ 2.2M</div>
+    </div>
+    <div class="metric-card green">
+      <div class="label">NPV optimista (fatalidad evitada)</div>
+      <div class="value">S/ 3.81M</div>
+      <div class="sub">p=0.3 × S/ 10M</div>
+    </div>
+    <div class="metric-card blue">
+      <div class="label">IRR anualizada</div>
+      <div class="value">343%</div>
+      <div class="sub">Tasa interna de retorno</div>
+    </div>
+    <div class="metric-card orange">
+      <div class="label">Payback</div>
+      <div class="value">Mes 11</div>
+      <div class="sub">Escenario base conservador</div>
+    </div>
+    <div class="metric-card red">
+      <div class="label">Inversión 24 meses</div>
+      <div class="value">S/ 1.22M</div>
+      <div class="sub">CAPEX 731k + OPEX 487k</div>
+    </div>
+    <div class="metric-card orange">
+      <div class="label">Risk register</div>
+      <div class="value">10</div>
+      <div class="sub">Riesgos identificados con mitigación</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= EVOLUCION TEMPORAL ================= -->
+<section>
+  <h2>Evolución mensual del LRAC-4P por VP</h2>
+  <div class="chart-container" style="height:380px;"><canvas id="chartEvolucion"></canvas></div>
+</section>
+
+<!-- ================= STACK ENTREGABLES ================= -->
+<section>
+  <h2>Stack de entregables proyectados</h2>
+  <table>
+    <tr><th>#</th><th>Entregable</th><th>Estado</th><th>ETA</th><th>Iteración</th></tr>
+    <tr><td>P</td><td>PDF principal "Emanuel Edgar Ancco Guaygua.pdf"</td><td><span class="badge green">✓ v1 listo (21pp)</span></td><td>—</td><td>ITER 1</td></tr>
+    <tr><td>P</td><td>PDF v2 con ITER 2 integrada (Gantt + ROI + inferencial)</td><td><span class="badge orange">en compilación</span></td><td>Esta noche</td><td>ITER 2</td></tr>
+    <tr><td>A1</td><td>Repo GitHub público + GitHub Actions CI</td><td><span class="badge gray">pendiente</span></td><td>Jue 22 AM</td><td>ITER 3A</td></tr>
+    <tr><td>A2</td><td>Demo Streamlit deployada con URL pública</td><td><span class="badge gray">pendiente</span></td><td>Jue 22 PM</td><td>ITER 3B</td></tr>
+    <tr><td>A3</td><td>Video 90s GAIATECH M1.0 en YouTube unlisted</td><td><span class="badge gray">pendiente</span></td><td>Vie 23 AM</td><td>ITER 4A</td></tr>
+    <tr><td>A4</td><td>Slides defensa 10 min (Slidev HTML+PDF)</td><td><span class="badge gray">pendiente</span></td><td>Vie 23 PM</td><td>ITER 4B</td></tr>
+    <tr><td>A5</td><td>Power BI .pbix interactivo</td><td><span class="badge gray">pendiente</span></td><td>Sáb 24 AM</td><td>ITER 5A</td></tr>
+    <tr><td>★</td><td>ENVÍO final a Peru.Recruitment@MMG.COM</td><td><span class="badge gray">pendiente</span></td><td>Sáb 24 antes 18:00</td><td>ITER 5</td></tr>
+  </table>
+</section>
+
+<!-- ================= KPIs DEL PLAN ================= -->
+<section>
+  <h2>KPIs del Plan a 24 meses (línea base → meta diciembre 2026 → meta abril 2028)</h2>
+  <ul class="kpi-list">
+    <li><span class="kpi-label">L · Liderazgo</span> <span class="kpi-val">67.6% → 75% → 85%</span></li>
+    <li><span class="kpi-label">R · Riesgos</span> <span class="kpi-val">69.7% → 76% → 85%</span></li>
+    <li><span class="kpi-label">A · Aprendizaje</span> <span class="kpi-val">67.7% → 76% → 85%</span></li>
+    <li><span class="kpi-label">C · Contratistas</span> <span class="kpi-val">68.9% → 75% → 85%</span></li>
+    <li><span class="kpi-label" style="font-weight:700; color:#fff;">LRAC-4P consolidado</span> <span class="kpi-val" style="color:#7ed18a;">68.9% → 75.4% → 80.0%</span></li>
+    <li><span class="kpi-label">NMAP (cuello de botella)</span> <span class="kpi-val">65.7% → 72% → 82%</span></li>
+    <li><span class="kpi-label">ACC (acciones correctivas)</span> <span class="kpi-val">70.4% → 78% → 85%</span></li>
+  </ul>
+</section>
+
+<footer>
+  Dashboard generado el 2026-05-20 · Workspace: <code>scratch/n8n/lasbambas-lrac-2026/</code> · Nodo Obsidian: <code>Proyectos/GAIATECH M1.0/80 - Caso 13 LRAC - Estado y bitacora</code>
+</footer>
+
+</div>
+
+<script>
+const COLORS = { OPS:'#C8102E', PROY:'#FF7F0E', SHE:'#2E7D32', SUPPLY:'#1F77B4' };
+
+// Score compuesto
+new Chart(document.getElementById('chartScore'), {
+  type:'bar',
+  data:{
+    labels:['OPERACIONES','SHE','PROYECTOS','SUPPLY'],
+    datasets:[
+      {label:'µ (promedio)', data:[69.70, 68.57, 68.72, 69.71], backgroundColor:'rgba(255,255,255,0.65)'},
+      {label:'S = µ − σ', data:[68.45, 67.61, 64.80, 63.88], backgroundColor:['#C8102E','#2E7D32','#FF7F0E','#1F77B4']},
+    ]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    scales:{
+      y:{min:55, max:75, ticks:{color:'#888'}, grid:{color:'rgba(255,255,255,0.05)'}, title:{display:true,text:'%',color:'#888'}},
+      x:{ticks:{color:'#ccc'}, grid:{display:false}}
+    },
+    plugins:{legend:{labels:{color:'#ccc',font:{size:11}}}}
+  }
+});
+
+// Mann-Kendall
+new Chart(document.getElementById('chartMK'), {
+  type:'bar',
+  data:{
+    labels:['OPERACIONES','PROYECTOS','SHE','SUPPLY'],
+    datasets:[{
+      label:'Kendall τ',
+      data:[-0.667, 0, 0.333, 0],
+      backgroundColor:['#C8102E','#888','#2E7D32','#888'],
+    }]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false, indexAxis:'y',
+    scales:{
+      x:{min:-1, max:1, ticks:{color:'#888'}, grid:{color:'rgba(255,255,255,0.05)'}, title:{display:true,text:'τ',color:'#888'}},
+      y:{ticks:{color:'#ccc'}, grid:{display:false}}
+    },
+    plugins:{legend:{display:false}}
+  }
+});
+
+// Acciones por horizonte
+new Chart(document.getElementById('chartAcciones'), {
+  type:'doughnut',
+  data:{
+    labels:['H1 · 0-3m (10 acc)','H2 · 3-9m (8 acc)','H3 · 9-24m (13 acc)'],
+    datasets:[{
+      data:[10,8,13],
+      backgroundColor:['#C8102E','#FF7F0E','#2E7D32'],
+      borderColor:'#1f1f22', borderWidth:3
+    }]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{
+      legend:{position:'bottom', labels:{color:'#ccc',font:{size:11}}},
+      tooltip:{callbacks:{label: c => `${c.label}: ${c.parsed} acciones`}}
+    }
+  }
+});
+
+// Presupuesto acumulado
+new Chart(document.getElementById('chartPresupuesto'), {
+  type:'bar',
+  data:{
+    labels:['H1','H2','H3','Total'],
+    datasets:[
+      {label:'CAPEX', data:[63000,160000,508000,731000], backgroundColor:'#C8102E'},
+      {label:'OPEX',  data:[36600,91600,359000,487200], backgroundColor:'#FF7F0E'},
+    ]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    scales:{
+      y:{ticks:{color:'#888', callback:v=>`S/ ${(v/1000).toFixed(0)}k`}, grid:{color:'rgba(255,255,255,0.05)'}},
+      x:{ticks:{color:'#ccc'}, grid:{display:false}, stacked:true}
+    },
+    plugins:{legend:{labels:{color:'#ccc',font:{size:11}}}}
+  }
+});
+
+// Evolución mensual
+new Chart(document.getElementById('chartEvolucion'), {
+  type:'line',
+  data:{
+    labels:['Enero','Febrero','Marzo','Abril'],
+    datasets:[
+      {label:'OPERACIONES', data:[71.49,69.42,68.57,69.33], borderColor:'#C8102E', backgroundColor:'rgba(200,16,46,0.1)', tension:0.3, borderWidth:2.5, pointRadius:5},
+      {label:'PROYECTOS',   data:[66.33,72.75,64.53,71.25], borderColor:'#FF7F0E', backgroundColor:'rgba(255,127,14,0.1)', tension:0.3, borderWidth:2.5, pointRadius:5},
+      {label:'SHE',         data:[69.19,67.27,68.43,69.39], borderColor:'#2E7D32', backgroundColor:'rgba(46,125,50,0.1)', tension:0.3, borderWidth:2.5, pointRadius:5},
+      {label:'SUPPLY',      data:[62.95,77.18,69.73,68.98], borderColor:'#1F77B4', backgroundColor:'rgba(31,119,180,0.1)', tension:0.3, borderWidth:2.5, pointRadius:5},
+      {label:'Meta 70%', data:[70,70,70,70], borderColor:'#888', borderDash:[5,5], pointRadius:0, fill:false, borderWidth:1.5},
+    ]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    scales:{
+      y:{min:60, max:80, ticks:{color:'#888', callback:v=>`${v}%`}, grid:{color:'rgba(255,255,255,0.05)'}, title:{display:true,text:'LRAC-4P',color:'#888'}},
+      x:{ticks:{color:'#ccc'}, grid:{display:false}}
+    },
+    plugins:{legend:{labels:{color:'#ccc',font:{size:11}}, position:'bottom'}}
+  }
+});
+</script>
+</body>
+</html>

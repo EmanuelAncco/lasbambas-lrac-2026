@@ -1,0 +1,137 @@
+{
+  "cross_indicator_critical": [
+    {
+      "vp": "SHE",
+      "gerencia": "RELAVERAS",
+      "pos_media": 5.142857142857143,
+      "valor_medio": 0.5042857142857142,
+      "bottom3_count": 5
+    },
+    {
+      "vp": "OPERACIONES",
+      "gerencia": "MINA",
+      "pos_media": 5.285714285714286,
+      "valor_medio": 0.5014285714285714,
+      "bottom3_count": 3
+    },
+    {
+      "vp": "SHE",
+      "gerencia": "MEDIO AMBIENTE",
+      "pos_media": 5.714285714285714,
+      "valor_medio": 0.5314285714285715,
+      "bottom3_count": 4
+    },
+    {
+      "vp": "SUPPLY",
+      "gerencia": "ABASTECIMIENTO",
+      "pos_media": 5.714285714285714,
+      "valor_medio": 0.5242857142857142,
+      "bottom3_count": 1
+    },
+    {
+      "vp": "PROYECTOS",
+      "gerencia": "PROYECTOS 2",
+      "pos_media": 6.142857142857143,
+      "valor_medio": 0.5357142857142857,
+      "bottom3_count": 1
+    },
+    {
+      "vp": "OPERACIONES",
+      "gerencia": "MANTENIMIENTO",
+      "pos_media": 6.285714285714286,
+      "valor_medio": 0.5157142857142857,
+      "bottom3_count": 1
+    }
+  ],
+  "estabilidad_intra_gerencia": [
+    {
+      "vp": "OPERACIONES",
+      "ger": "MANTENIMIENTO",
+      "mu": 0.7001000000000001,
+      "sd": 0.019050459312048112,
+      "cv": 2.7211054580842893
+    },
+    {
+      "vp": "SHE",
+      "ger": "RELAVERAS",
+      "mu": 0.6582,
+      "sd": 0.022889298809705794,
+      "cv": 3.4775598313135516
+    },
+    {
+      "vp": "OPERACIONES",
+      "ger": "SERV. TÉCNICOS",
+      "mu": 0.7078500000000001,
+      "sd": 0.028526654202692573,
+      "cv": 4.030042269222656
+    },
+    {
+      "vp": "PROYECTOS",
+      "ger": "PROYECTOS 2",
+      "mu": 0.62315,
+      "sd": 0.027937728373414124,
+      "cv": 4.483307128847649
+    },
+    {
+      "vp": "OPERACIONES",
+      "ger": "PLANTA",
+      "mu": 0.74775,
+      "sd": 0.05006272731950059,
+      "cv": 6.695115656235451
+    },
+    {
+      "vp": "OPERACIONES",
+      "ger": "DESARROLLO RECURSOS",
+      "mu": 0.66215,
+      "sd": 0.04554803325428372,
+      "cv": 6.878808918565841
+    },
+    {
+      "vp": "SHE",
+      "ger": "SSO",
+      "mu": 0.6896500000000001,
+      "sd": 0.050073379487841,
+      "cv": 7.260694480945551
+    },
+    {
+      "vp": "OPERACIONES",
+      "ger": "MINA",
+      "mu": 0.6673,
+      "sd": 0.04865127610522326,
+      "cv": 7.290765188854078
+    },
+    {
+      "vp": "SUPPLY",
+      "ger": "ABASTECIMIENTO",
+      "mu": 0.7038,
+      "sd": 0.06087736306159566,
+      "cv": 8.64981004001075
+    },
+    {
+      "vp": "SUPPLY",
+      "ger": "LOGISTICA",
+      "mu": 0.6904,
+      "sd": 0.06084888385719714,
+      "cv": 8.813569504229017
+    },
+    {
+      "vp": "SHE",
+      "ger": "MEDIO AMBIENTE",
+      "mu": 0.7093,
+      "sd": 0.07774393867048417,
+      "cv": 10.960656798320056
+    },
+    {
+      "vp": "PROYECTOS",
+      "ger": "PROYECTOS 1",
+      "mu": 0.7511500000000001,
+      "sd": 0.08828474764457715,
+      "cv": 11.753277993020987
+    }
+  ],
+  "peor_par_herramienta_vp_enero": {
+    "herramienta": "CCV",
+    "vp": "SHE",
+    "valor": 0.37666666666666665
+  }
+}

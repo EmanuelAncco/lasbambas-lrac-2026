@@ -1,0 +1,211 @@
+{
+  "name": "LRAC-001 · RACS guiado conversacional",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "lrac/whatsapp/incoming",
+        "responseMode": "responseNode",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              { "name": "X-LRAC-Workflow", "value": "LRAC-001" }
+            ]
+          }
+        }
+      },
+      "id": "node-001-webhook",
+      "name": "Webhook · Evolution API",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-2000, 0],
+      "webhookId": "lrac001"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            { "conditions": { "string": [{ "value1": "={{ $json.body.messageType }}", "operation": "equal", "value2": "conversation" }] }, "renameOutput": true, "outputKey": "texto" },
+            { "conditions": { "string": [{ "value1": "={{ $json.body.messageType }}", "operation": "equal", "value2": "image" }] }, "renameOutput": true, "outputKey": "foto" },
+            { "conditions": { "string": [{ "value1": "={{ $json.body.messageType }}", "operation": "equal", "value2": "audio" }] }, "renameOutput": true, "outputKey": "voz" },
+            { "conditions": { "string": [{ "value1": "={{ $json.body.messageType }}", "operation": "equal", "value2": "location" }] }, "renameOutput": true, "outputKey": "ubicacion" }
+          ]
+        }
+      },
+      "id": "node-002-switch",
+      "name": "Router · tipo de mensaje",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [-1700, 0]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT estado, payload FROM lrac_sesiones WHERE telefono = $1 AND vigente = true LIMIT 1;",
+        "options": {}
+      },
+      "id": "node-003-pg-sesion",
+      "name": "Postgres · cargar sesión activa",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [-1400, 0],
+      "credentials": { "postgres": { "id": "REPLACE_PG_LRAC", "name": "lrac-pgvector" } }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Maquina de estados del RACS\n// estados: NUEVO, ESPERANDO_FOTO, ESPERANDO_GPS, ESPERANDO_DESCRIPCION, CLASIFICANDO\nconst sesion = $input.first().json;\nconst entrada = $('Router · tipo de mensaje').first().json;\nlet siguienteEstado;\nlet respuestaBot;\nlet payload = sesion.payload || {};\n\nif (!sesion.estado || entrada.body.text === 'RACS') {\n  siguienteEstado = 'ESPERANDO_FOTO';\n  respuestaBot = 'Hola 👷 Vamos a registrar el RACS. Mándame primero una foto.';\n  payload = { iniciado: new Date().toISOString() };\n} else if (sesion.estado === 'ESPERANDO_FOTO' && entrada.outputKey === 'foto') {\n  siguienteEstado = 'ESPERANDO_GPS';\n  respuestaBot = '✓ Foto recibida. Ahora envíame tu ubicación en vivo 📍';\n  payload.foto_url = entrada.body.message.imageMessage.url;\n} else if (sesion.estado === 'ESPERANDO_GPS' && entrada.outputKey === 'ubicacion') {\n  siguienteEstado = 'ESPERANDO_DESCRIPCION';\n  respuestaBot = 'Cuéntame qué viste 🎤 (texto o nota de voz)';\n  payload.gps = { lat: entrada.body.message.locationMessage.degreesLatitude, lon: entrada.body.message.locationMessage.degreesLongitude };\n} else if (sesion.estado === 'ESPERANDO_DESCRIPCION' && (entrada.outputKey === 'texto' || entrada.outputKey === 'voz')) {\n  siguienteEstado = 'CLASIFICANDO';\n  respuestaBot = '⚡ Procesando con Gemini Pro...';\n  payload.descripcion_raw = entrada.outputKey === 'voz' ? entrada.body.message.audioMessage.url : entrada.body.text;\n  payload.tipo_descripcion = entrada.outputKey;\n} else {\n  siguienteEstado = sesion.estado;\n  respuestaBot = 'Disculpa, no entendí. ¿Estás en medio de un RACS? Escribe RACS para empezar de cero.';\n}\nreturn [{ json: { estado: siguienteEstado, payload, respuestaBot, telefono: entrada.body.from } }];"
+      },
+      "id": "node-004-state-machine",
+      "name": "Máquina de estados RACS",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-1100, 0]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO lrac_sesiones (telefono, estado, payload, vigente, actualizado) VALUES ($1, $2, $3, true, NOW()) ON CONFLICT (telefono) WHERE vigente DO UPDATE SET estado = EXCLUDED.estado, payload = EXCLUDED.payload, actualizado = NOW();"
+      },
+      "id": "node-005-pg-update",
+      "name": "Postgres · actualizar sesión",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [-800, 0]
+    },
+    {
+      "parameters": {
+        "conditions": { "string": [{ "value1": "={{ $json.estado }}", "operation": "equal", "value2": "CLASIFICANDO" }] }
+      },
+      "id": "node-006-if-clasificar",
+      "name": "¿Listo para clasificar?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [-500, 0]
+    },
+    {
+      "parameters": {
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent",
+        "method": "POST",
+        "sendQuery": true,
+        "queryParameters": { "parameters": [{ "name": "key", "value": "={{ $env.GEMINI_API_KEY }}" }] },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contents\": [{\n    \"parts\": [\n      { \"text\": \"Eres un clasificador SHE minero senior. Estructura este RACS de Mina Juanita S.A. en JSON con campos: tipo (acto/condicion/cuasi), severidad (leve/moderada/alta/inminente), fatal_risk (uno de los 12 MMG), regla_para_la_vida (numero 1-13 o null), descripcion_normalizada (texto breve, profesional), recomendaciones (array). Solo JSON, sin markdown. Foto: {{ $json.payload.foto_url }}. Descripcion: {{ $json.payload.descripcion_raw }}. GPS: {{ JSON.stringify($json.payload.gps) }}\" }\n    ]\n  }],\n  \"generationConfig\": { \"response_mime_type\": \"application/json\", \"temperature\": 0.1 }\n}"
+      },
+      "id": "node-007-gemini",
+      "name": "Gemini Pro · clasificar",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-200, -100]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO lrac_racs (telefono, vp, gerencia, tipo, severidad, fatal_risk, regla_vida, descripcion, gps, foto_url, payload_ia, embedding, ticket_iem, creado) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, NOW()) RETURNING id;"
+      },
+      "id": "node-008-pg-insert",
+      "name": "Postgres · INSERT RACS + embedding",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [100, -100]
+    },
+    {
+      "parameters": {
+        "url": "{{ $env.IEM_API_URL }}/incidents",
+        "method": "POST",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"source\": \"AECODITO_LRAC_001\",\n  \"type\": \"RACS\",\n  \"severity\": \"{{ $json.severidad }}\",\n  \"description\": \"{{ $json.descripcion_normalizada }}\",\n  \"location\": {{ JSON.stringify($('Máquina de estados RACS').first().json.payload.gps) }},\n  \"photo_url\": \"{{ $('Máquina de estados RACS').first().json.payload.foto_url }}\",\n  \"reporter_phone\": \"{{ $('Máquina de estados RACS').first().json.telefono }}\"\n}"
+      },
+      "id": "node-009-iem",
+      "name": "IEM corporativo · crear ticket",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [400, -100]
+    },
+    {
+      "parameters": {
+        "url": "={{ $env.EVOLUTION_URL }}/message/sendText/{{ $env.EVOLUTION_INSTANCE }}",
+        "method": "POST",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $('Máquina de estados RACS').first().json.telefono }}\",\n  \"text\": \"✓ RACS #{{ $json.ticket_iem }} creado\\n\\nTipo: {{ $json.tipo }}\\nSeveridad: {{ $json.severidad }}\\nFatal-risk: {{ $json.fatal_risk }}\\n\\nTu supervisor ya recibió la alerta.\"\n}",
+        "options": { "timeout": 8000 }
+      },
+      "id": "node-010-bot-respuesta",
+      "name": "WhatsApp · confirmar al operador",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [700, -100]
+    },
+    {
+      "parameters": {
+        "url": "={{ $env.EVOLUTION_URL }}/message/sendText/{{ $env.EVOLUTION_INSTANCE }}",
+        "method": "POST",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $json.supervisor_telefono }}\",\n  \"text\": \"🚨 Nuevo RACS #{{ $json.ticket_iem }}\\nSeveridad: {{ $json.severidad }} | Fatal-risk: {{ $json.fatal_risk }}\\n{{ $json.descripcion_normalizada }}\\n\\nFoto y ubicación en IEM. SLA cierre: 24 h\"\n}"
+      },
+      "id": "node-011-notify-supervisor",
+      "name": "WhatsApp · notificar supervisor",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1000, -100]
+    },
+    {
+      "parameters": {
+        "url": "={{ $env.EVOLUTION_URL }}/message/sendText/{{ $env.EVOLUTION_INSTANCE }}",
+        "method": "POST",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={ \"number\": \"{{ $json.telefono }}\", \"text\": \"{{ $json.respuestaBot }}\" }"
+      },
+      "id": "node-012-bot-continuar",
+      "name": "WhatsApp · responder al operador (estado intermedio)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-200, 100]
+    },
+    {
+      "parameters": { "respondWith": "text", "responseBody": "OK" },
+      "id": "node-013-respond",
+      "name": "Respond OK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1300, 0]
+    }
+  ],
+  "connections": {
+    "Webhook · Evolution API": { "main": [[{ "node": "Router · tipo de mensaje", "type": "main", "index": 0 }]] },
+    "Router · tipo de mensaje": {
+      "main": [
+        [{ "node": "Postgres · cargar sesión activa", "type": "main", "index": 0 }],
+        [{ "node": "Postgres · cargar sesión activa", "type": "main", "index": 0 }],
+        [{ "node": "Postgres · cargar sesión activa", "type": "main", "index": 0 }],
+        [{ "node": "Postgres · cargar sesión activa", "type": "main", "index": 0 }]
+      ]
+    },
+    "Postgres · cargar sesión activa": { "main": [[{ "node": "Máquina de estados RACS", "type": "main", "index": 0 }]] },
+    "Máquina de estados RACS": { "main": [[{ "node": "Postgres · actualizar sesión", "type": "main", "index": 0 }]] },
+    "Postgres · actualizar sesión": { "main": [[{ "node": "¿Listo para clasificar?", "type": "main", "index": 0 }]] },
+    "¿Listo para clasificar?": {
+      "main": [
+        [{ "node": "Gemini Pro · clasificar", "type": "main", "index": 0 }],
+        [{ "node": "WhatsApp · responder al operador (estado intermedio)", "type": "main", "index": 0 }]
+      ]
+    },
+    "Gemini Pro · clasificar": { "main": [[{ "node": "Postgres · INSERT RACS + embedding", "type": "main", "index": 0 }]] },
+    "Postgres · INSERT RACS + embedding": { "main": [[{ "node": "IEM corporativo · crear ticket", "type": "main", "index": 0 }]] },
+    "IEM corporativo · crear ticket": { "main": [[{ "node": "WhatsApp · confirmar al operador", "type": "main", "index": 0 }]] },
+    "WhatsApp · confirmar al operador": { "main": [[{ "node": "WhatsApp · notificar supervisor", "type": "main", "index": 0 }]] },
+    "WhatsApp · notificar supervisor": { "main": [[{ "node": "Respond OK", "type": "main", "index": 0 }]] },
+    "WhatsApp · responder al operador (estado intermedio)": { "main": [[{ "node": "Respond OK", "type": "main", "index": 0 }]] }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" },
+  "pinData": {},
+  "meta": { "templateCredsSetupCompleted": false, "workflow_id": "LRAC-001", "description": "Captura conversacional de RACS · Mina Juanita S.A. · Innovadores en Acción 2026", "author": "Emanuel Edgar Ancco Guaygua" },
+  "tags": [{ "name": "lrac" }, { "name": "gaiatech-m1" }, { "name": "M1.B" }, { "name": "lasbambas" }]
+}

@@ -1,0 +1,22 @@
+\begin{table}[h]
+\centering\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\linewidth}{@{}p{0.7cm} X p{1cm} p{1cm} X p{1.5cm}@{}}
+\toprule
+\textbf{ID} & \textbf{Riesgo} & \textbf{Prob.} & \textbf{Impacto} & \textbf{Mitigación} & \textbf{Owner} \\
+\midrule
+R-01 & Resistencia cultural al cambio LRAC & Alta & Alto & Estrategia adopción liderada por SHE + embajadores por área (A-21) & VP SHE \\
+R-02 & YOLOv8 AGPL-3.0 en producción & Media & Medio & Migrar a RF-DETR / YOLOX (Apache 2.0) antes del piloto & Lead AI \\
+R-03 & Conectividad 4G inestable en zona mina & Alta & Medio & Inferencia edge (Jetson) + buffering + sync diferido & Lead IT \\
+R-04 & Integración API IEM corporativo (sistema cerrado MMG) & Media & Alto & API oficial vía CTO MMG + fallback CSV nocturno & Lead Integración \\
+R-05 & Privacidad biometrica (Ley 29733 datos personales) & Media & Alto & Consentimiento informado + anonimización + DPO designado & Legal \\
+R-06 & Bajo presupuesto asignado por dirección & Media & Alto & Business case sustentado en costos evitados (NPV S/ 2.8M base) & VP SHE \\
+R-07 & Subreporte por miedo a sanción (cultura punitiva residual) & Alta & Alto & Programa Just Culture A-16 + comunicación pública casos de éxito & Cultura SHE \\
+R-08 & Rotación de personal clave durante implementación & Media & Medio & Documentación rigurosa + suplencia formal de roles críticos & RR.HH. \\
+R-09 & Falla de proveedores externos (auditor, licencias) & Baja & Medio & Proveedores backup + SLAs contractuales & Procura \\
+R-10 & Resistencia de contratistas al nuevo modelo de incentivos & Media & Medio & Roll-out gradual: bono solidario primero (A-09), penalización después (A-26) & VP SUPPLY \\
+\bottomrule
+\end{tabularx}
+\caption{Risk register del Plan de Acción Estratégico LRAC.}
+\label{tab:riesgos}
+\end{table}

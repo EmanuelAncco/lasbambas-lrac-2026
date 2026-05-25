@@ -1,0 +1,15 @@
+{
+  "version": "0.1",
+  "connections": [
+    {
+      "details": {
+        "protocol": "file",
+        "address": {
+          "path": "./data/00_data_caso.xlsx"
+        }
+      },
+      "options": {},
+      "mode": "Import"
+    }
+  ]
+}

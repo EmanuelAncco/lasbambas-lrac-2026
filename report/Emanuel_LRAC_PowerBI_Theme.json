@@ -1,0 +1,55 @@
+{
+  "name": "GAIATECH MMG LRAC Theme",
+  "description": "Tema personalizado para Emanuel_LRAC_Dashboard.pbix · paleta MMG Las Bambas + acentos GAIATECH",
+  "dataColors": [
+    "#C8102E",
+    "#FF7F0E",
+    "#2E7D32",
+    "#1F77B4",
+    "#9C27B0",
+    "#FFD700",
+    "#4D4D4D",
+    "#E8E8EA"
+  ],
+  "background": "#FFFFFF",
+  "foreground": "#0F0F10",
+  "tableAccent": "#C8102E",
+  "good": "#2E7D32",
+  "neutral": "#F9A825",
+  "bad": "#C62828",
+  "maximum": "#2E7D32",
+  "center": "#F9A825",
+  "minimum": "#C62828",
+  "null": "#999999",
+  "textClasses": {
+    "title": {
+      "fontFace": "Segoe UI Bold",
+      "fontSize": 18,
+      "color": "#0F0F10"
+    },
+    "header": {
+      "fontFace": "Segoe UI Semibold",
+      "fontSize": 12,
+      "color": "#4D4D4D"
+    },
+    "label": {
+      "fontFace": "Segoe UI",
+      "fontSize": 10,
+      "color": "#0F0F10"
+    },
+    "callout": {
+      "fontFace": "Segoe UI Bold",
+      "fontSize": 28,
+      "color": "#C8102E"
+    }
+  },
+  "visualStyles": {
+    "*": {
+      "*": {
+        "background": [{ "show": true, "transparency": 0 }],
+        "border": [{ "show": true, "color": { "solid": { "color": "#E0E0E0" } } }],
+        "title": [{ "fontColor": { "solid": { "color": "#C8102E" } }, "fontSize": 14, "fontFamily": "Segoe UI Bold" }]
+      }
+    }
+  }
+}

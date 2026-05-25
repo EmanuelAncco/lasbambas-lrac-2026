@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Aecodito Minero · captura RACS</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: -apple-system, "Segoe UI", "Helvetica Neue", sans-serif;
+  background: linear-gradient(135deg,#0F0F10 0%,#1c1c1f 100%);
+  padding: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+}
+.phone {
+  width: 420px;
+  background: #0a1014;
+  border-radius: 32px;
+  border: 8px solid #1f2733;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.5), 0 0 0 2px #2a3340 inset;
+  overflow: hidden;
+  position: relative;
+}
+.notch {
+  position: absolute;
+  top: 8px; left: 50%; transform: translateX(-50%);
+  width: 120px; height: 22px;
+  background: #000;
+  border-radius: 14px;
+  z-index: 5;
+}
+/* Header tipo WhatsApp */
+.header {
+  background: linear-gradient(180deg,#1f2733 0%,#1a2129 100%);
+  padding: 38px 14px 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid #2a3340;
+}
+.avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg,#C8102E 0%,#FF7F0E 100%);
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-weight: 800; font-size: 16px;
+  border: 2px solid #2a3340;
+}
+.contact-info { flex:1; }
+.contact-name {
+  color: #e8e8ea;
+  font-weight: 600;
+  font-size: 15px;
+}
+.contact-status {
+  color: #25D366;
+  font-size: 11px;
+  margin-top: 1px;
+}
+.actions {
+  display: flex; gap: 14px;
+  color: #8a949e;
+  font-size: 16px;
+}
+.action-ico { opacity:0.7; }
+
+/* Chat body */
+.chat {
+  background: #0a1014;
+  padding: 16px 12px;
+  min-height: 580px;
+  position: relative;
+  background-image:
+    radial-gradient(rgba(255,255,255,0.015) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+.day-divider {
+  text-align: center;
+  margin: 8px 0 16px 0;
+}
+.day-divider span {
+  background: #1c2530;
+  color: #8a949e;
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 12px;
+}
+
+.msg {
+  max-width: 80%;
+  padding: 8px 11px;
+  margin-bottom: 6px;
+  font-size: 14px;
+  line-height: 1.4;
+  border-radius: 8px;
+  position: relative;
+  word-wrap: break-word;
+}
+.msg .time {
+  font-size: 10px;
+  color: #8a949e;
+  margin-left: 6px;
+  vertical-align: bottom;
+}
+.msg .ticks {
+  color: #4FC3F7;
+  font-size: 11px;
+  margin-left: 4px;
+}
+.msg-bot {
+  background: #1c2530;
+  color: #e8e8ea;
+  border-bottom-left-radius: 2px;
+  margin-right: auto;
+  border-left: 3px solid #C8102E;
+}
+.msg-user {
+  background: #056162;
+  color: #e8e8ea;
+  border-bottom-right-radius: 2px;
+  margin-left: auto;
+}
+.msg-meta { font-size:11px; opacity:0.6; margin-top:4px; }
+.attachment {
+  background: rgba(255,255,255,0.05);
+  border-radius: 6px;
+  padding: 8px;
+  margin-top: 6px;
+  display: flex; gap: 8px;
+  align-items: center;
+}
+.attachment-ico {
+  font-size: 22px;
+  width: 30px; height: 30px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,0.08);
+  border-radius: 6px;
+}
+.attachment-name { font-size:12px; }
+.attachment-meta { font-size:10px; opacity:0.6; }
+
+.photo {
+  width: 220px;
+  height: 140px;
+  background: linear-gradient(135deg,#37474f 0%,#263238 100%);
+  border-radius: 6px;
+  margin-top: 4px;
+  display: flex; align-items: center; justify-content: center;
+  color: #b0bec5;
+  font-size: 10px;
+  position: relative;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 140"><rect width="220" height="140" fill="%23263238"/><rect x="20" y="100" width="180" height="20" fill="%23455a64" opacity="0.7"/><rect x="40" y="40" width="40" height="60" fill="%23607d8b" opacity="0.6"/><rect x="100" y="20" width="50" height="80" fill="%2378909c" opacity="0.5"/><circle cx="180" cy="30" r="15" fill="%23FFC107" opacity="0.4"/><text x="110" y="135" text-anchor="middle" fill="%2390a4ae" font-size="10" font-family="monospace">FOTO · PLANTA · 14:23</text></svg>');
+  background-size: cover;
+}
+
+.voice-msg {
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.04);
+  padding: 6px 8px;
+  border-radius: 18px;
+  width: 180px;
+  margin-top: 4px;
+}
+.play-btn { color:#25D366; font-size:18px; }
+.waveform {
+  flex: 1;
+  height: 16px;
+  background:
+    linear-gradient(to right,
+      #25D366 0%, #25D366 30%,
+      #4a5563 30%, #4a5563 100%);
+  border-radius: 8px;
+  position: relative;
+  display:flex;align-items:center;justify-content:space-between;
+  padding: 0 4px;
+}
+.wave-bar {
+  width: 2px;
+  background: rgba(255,255,255,0.5);
+  border-radius: 1px;
+}
+.voice-duration { font-size:10px; opacity:0.7; }
+
+.classification {
+  background: #1c2530;
+  border-left: 3px solid #2E7D32;
+  padding: 10px;
+  border-radius: 6px;
+  margin-top: 6px;
+}
+.classification-title {
+  color: #25D366;
+  font-weight: 700;
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+.classification dl {
+  font-size: 12px;
+  line-height: 1.5;
+}
+.classification dt { color: #8a949e; }
+.classification dd { color: #e8e8ea; font-weight: 600; margin-bottom: 4px; }
+.classification .ticket {
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px solid #2a3340;
+  color: #FF7F0E;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.input-bar {
+  background: #1a2129;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-top: 1px solid #2a3340;
+}
+.input-field {
+  flex: 1;
+  background: #0a1014;
+  border: 1px solid #2a3340;
+  border-radius: 20px;
+  padding: 8px 14px;
+  color: #8a949e;
+  font-size: 13px;
+}
+.send-btn {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: #25D366;
+  display: flex; align-items: center; justify-content: center;
+  color: white;
+  font-size: 16px;
+}
+
+/* Footer */
+.footer-card {
+  margin-top: 24px;
+  background: #1c2530;
+  border-radius: 10px;
+  padding: 12px 16px;
+  text-align: center;
+  color: #8a949e;
+  font-size: 11px;
+  max-width: 420px;
+}
+.footer-card strong { color: #e8e8ea; }
+.footer-card .stack {
+  font-family: ui-monospace, "JetBrains Mono", monospace;
+  font-size: 10px;
+  color: #4FC3F7;
+  margin-top: 4px;
+}
+</style>
+</head>
+<body>
+
+<div style="display:flex; flex-direction:column; align-items:center;">
+
+<div class="phone">
+  <div class="notch"></div>
+
+  <div class="header">
+    <div class="avatar">A</div>
+    <div class="contact-info">
+      <div class="contact-name">Aecodito Minero · SHE Bot</div>
+      <div class="contact-status">● en línea</div>
+    </div>
+    <div class="actions">
+      <span class="action-ico">📹</span>
+      <span class="action-ico">📞</span>
+      <span class="action-ico">⋮</span>
+    </div>
+  </div>
+
+  <div class="chat">
+    <div class="day-divider"><span>HOY · 14:23</span></div>
+
+    <!-- Operario inicia -->
+    <div class="msg msg-user">
+      RACS
+      <span class="time">14:23</span><span class="ticks">✓✓</span>
+    </div>
+
+    <!-- Bot pide foto -->
+    <div class="msg msg-bot">
+      <strong>Hola Juan 👷</strong><br>
+      Vamos a registrar el reporte.<br>
+      Mándame primero una <strong>foto</strong> de la condición.
+      <span class="time">14:23</span>
+    </div>
+
+    <!-- Foto -->
+    <div class="msg msg-user" style="padding:4px;">
+      <div class="photo">FOTO · faja transportadora</div>
+      <div style="padding:4px 4px 0;"><span class="time">14:23</span><span class="ticks">✓✓</span></div>
+    </div>
+
+    <!-- Bot pide ubicación -->
+    <div class="msg msg-bot">
+      ✓ Foto recibida.<br>
+      Comparte tu <strong>ubicación en vivo</strong> 📍
+      <span class="time">14:24</span>
+    </div>
+
+    <!-- Ubicación -->
+    <div class="msg msg-user">
+      <div class="attachment">
+        <div class="attachment-ico">📍</div>
+        <div>
+          <div class="attachment-name">Ubicación enviada</div>
+          <div class="attachment-meta">Planta concentradora · Molienda 2</div>
+        </div>
+      </div>
+      <span class="time">14:24</span><span class="ticks">✓✓</span>
+    </div>
+
+    <!-- Bot pide descripción -->
+    <div class="msg msg-bot">
+      Cuéntame qué viste 🎤<br>
+      <span style="font-size:11px; opacity:0.7;">(texto o nota de voz · lo procesamos igual)</span>
+      <span class="time">14:24</span>
+    </div>
+
+    <!-- Nota de voz -->
+    <div class="msg msg-user" style="padding:6px 8px;">
+      <div class="voice-msg">
+        <span class="play-btn">▶</span>
+        <div class="waveform">
+          <span class="wave-bar" style="height:6px"></span>
+          <span class="wave-bar" style="height:10px"></span>
+          <span class="wave-bar" style="height:14px"></span>
+          <span class="wave-bar" style="height:8px"></span>
+          <span class="wave-bar" style="height:12px"></span>
+          <span class="wave-bar" style="height:6px"></span>
+          <span class="wave-bar" style="height:10px"></span>
+          <span class="wave-bar" style="height:4px"></span>
+        </div>
+        <span class="voice-duration">0:15</span>
+      </div>
+      <div style="padding:4px 4px 0;"><span class="time">14:25</span><span class="ticks">✓✓</span></div>
+    </div>
+
+    <!-- Bot procesa y devuelve clasificación -->
+    <div class="msg msg-bot" style="max-width:90%;">
+      ⚡ <strong>Procesado en 12 segundos</strong> con Gemini Pro
+      <div class="classification">
+        <div class="classification-title">✓ RACS CLASIFICADO</div>
+        <dl>
+          <dt>Tipo:</dt><dd>Condición sub-estándar</dd>
+          <dt>Severidad:</dt><dd style="color:#FF7F0E;">ALTA ⚠</dd>
+          <dt>Riesgo fatal asociado:</dt><dd>Equipo móvil</dd>
+          <dt>Regla para la vida:</dt><dd>Nº 6 — Guardas y protecciones</dd>
+          <dt>Descripción extraída:</dt><dd style="font-weight:400;">Faja transportadora con guarda suelta en zona Molienda 2. Operador sin riesgo inmediato pero amerita stop work.</dd>
+        </dl>
+        <div class="ticket">
+          📋 RACS #2026-04823 creado en IEM<br>
+          <span style="color:#25D366; font-size:11px; font-weight:600;">Supervisor Carlos M. notificado · SLA cierre 24 h</span>
+        </div>
+      </div>
+      <span class="time">14:25</span>
+    </div>
+
+    <!-- Operario agradece -->
+    <div class="msg msg-user">
+      Gracias, ya volvió la confianza al reporte 👍
+      <span class="time">14:26</span><span class="ticks">✓✓</span>
+    </div>
+
+  </div>
+
+  <div class="input-bar">
+    <span style="color:#8a949e; font-size:18px;">😊</span>
+    <div class="input-field">Escribe un mensaje</div>
+    <span style="color:#8a949e; font-size:18px;">📎</span>
+    <div class="send-btn">🎤</div>
+  </div>
+</div>
+
+<div class="footer-card">
+  Workflow <strong>LRAC-001</strong> · Aecodito Minero<br>
+  <span class="stack">WhatsApp + Evolution API + n8n (50 nodos) + Gemini Pro + Postgres pgvector</span>
+</div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,209 @@
+{
+  "estructura_organizacional": {
+    "OPERACIONES": [
+      "DESARROLLO RECURSOS",
+      "MANTENIMIENTO",
+      "MINA",
+      "PLANTA",
+      "SERV. TÉCNICOS"
+    ],
+    "PROYECTOS": [
+      "PROYECTOS 1",
+      "PROYECTOS 2"
+    ],
+    "SUPPLY": [
+      "ABASTECIMIENTO",
+      "LOGISTICA"
+    ],
+    "SHE": [
+      "MEDIO AMBIENTE",
+      "RELAVERAS",
+      "SSO"
+    ]
+  },
+  "total_gerencias": 12,
+  "analisis_1_enero": {
+    "FTO": {
+      "peor_gerencia": "PLANTA",
+      "peor_vp": "OPERACIONES",
+      "peor_valor": 0.45,
+      "ranking_top3_peores": [
+        {
+          "vp": "OPERACIONES",
+          "ger": "PLANTA",
+          "valor": 0.45
+        },
+        {
+          "vp": "PROYECTOS",
+          "ger": "PROYECTOS 2",
+          "valor": 0.5
+        },
+        {
+          "vp": "SHE",
+          "ger": "MEDIO AMBIENTE",
+          "valor": 0.5
+        }
+      ]
+    },
+    "3Q": {
+      "peor_gerencia": "MEDIO AMBIENTE",
+      "peor_vp": "SHE",
+      "peor_valor": 0.39,
+      "ranking_top3_peores": [
+        {
+          "vp": "SHE",
+          "ger": "MEDIO AMBIENTE",
+          "valor": 0.39
+        },
+        {
+          "vp": "OPERACIONES",
+          "ger": "MINA",
+          "valor": 0.42
+        },
+        {
+          "vp": "SHE",
+          "ger": "RELAVERAS",
+          "valor": 0.42
+        }
+      ]
+    },
+    "ACC": {
+      "peor_gerencia": "MANTENIMIENTO",
+      "peor_vp": "OPERACIONES",
+      "peor_valor": 0.39,
+      "ranking_top3_peores": [
+        {
+          "vp": "OPERACIONES",
+          "ger": "MANTENIMIENTO",
+          "valor": 0.39
+        },
+        {
+          "vp": "SHE",
+          "ger": "RELAVERAS",
+          "valor": 0.39
+        },
+        {
+          "vp": "OPERACIONES",
+          "ger": "MINA",
+          "valor": 0.42
+        }
+      ]
+    },
+    "NMAP": {
+      "peor_gerencia": "SERV. TÉCNICOS",
+      "peor_vp": "OPERACIONES",
+      "peor_valor": 0.36,
+      "ranking_top3_peores": [
+        {
+          "vp": "OPERACIONES",
+          "ger": "SERV. TÉCNICOS",
+          "valor": 0.36
+        },
+        {
+          "vp": "OPERACIONES",
+          "ger": "MINA",
+          "valor": 0.39
+        },
+        {
+          "vp": "SHE",
+          "ger": "RELAVERAS",
+          "valor": 0.41
+        }
+      ]
+    }
+  },
+  "vp_summary_anual": [
+    {
+      "vp": "SUPPLY",
+      "promedio": 0.6971,
+      "desv": 0.05831860766513553,
+      "cv": 8.365888346741576,
+      "min": 0.6295,
+      "max": 0.7718,
+      "amplitud": 0.1423000000000001,
+      "detalle_mensual": {
+        "ENERO": 0.6295,
+        "FEBRERO": 0.7718,
+        "MARZO": 0.6973,
+        "ABRIL": 0.6898
+      }
+    },
+    {
+      "vp": "OPERACIONES",
+      "promedio": 0.69703,
+      "desv": 0.012517182856644132,
+      "cv": 1.795788252534917,
+      "min": 0.6857200000000001,
+      "max": 0.71492,
+      "amplitud": 0.029199999999999893,
+      "detalle_mensual": {
+        "ENERO": 0.71492,
+        "FEBRERO": 0.6942,
+        "MARZO": 0.6857200000000001,
+        "ABRIL": 0.69328
+      }
+    },
+    {
+      "vp": "PROYECTOS",
+      "promedio": 0.68715,
+      "desv": 0.039119432511221346,
+      "cv": 5.69299752764627,
+      "min": 0.6453,
+      "max": 0.7275,
+      "amplitud": 0.08220000000000005,
+      "detalle_mensual": {
+        "ENERO": 0.6633,
+        "FEBRERO": 0.7275,
+        "MARZO": 0.6453,
+        "ABRIL": 0.7125
+      }
+    },
+    {
+      "vp": "SHE",
+      "promedio": 0.6857166666666668,
+      "desv": 0.009583840566286536,
+      "cv": 1.3976385630051094,
+      "min": 0.6727333333333334,
+      "max": 0.6938666666666666,
+      "amplitud": 0.021133333333333226,
+      "detalle_mensual": {
+        "ENERO": 0.6919333333333334,
+        "FEBRERO": 0.6727333333333334,
+        "MARZO": 0.6843333333333333,
+        "ABRIL": 0.6938666666666666
+      }
+    }
+  ],
+  "vp_top_indicador_mas_alto": {
+    "vp": "SUPPLY",
+    "ind": "ACC",
+    "valor": 0.78125
+  },
+  "proyectos_lrac_promedio": 0.68715,
+  "proyectos_acc_promedio": 0.61125,
+  "proyectos_acc_por_mes": {
+    "ABRIL": 0.7,
+    "ENERO": 0.595,
+    "FEBRERO": 0.65,
+    "MARZO": 0.5
+  },
+  "proyectos_promedio_general_indicadores": 0.6858928571428572,
+  "abril_ranking": [
+    {
+      "vp": "PROYECTOS",
+      "lrac": 0.7125
+    },
+    {
+      "vp": "SHE",
+      "lrac": 0.6938666666666666
+    },
+    {
+      "vp": "OPERACIONES",
+      "lrac": 0.69328
+    },
+    {
+      "vp": "SUPPLY",
+      "lrac": 0.6898
+    }
+  ]
+}

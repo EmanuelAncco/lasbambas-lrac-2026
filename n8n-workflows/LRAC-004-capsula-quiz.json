@@ -1,0 +1,169 @@
+{
+  "name": "LRAC-004 · Cápsula semanal + quiz adaptativo",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": { "interval": [{ "field": "cronExpression", "expression": "0 7 * * 1" }] }
+      },
+      "id": "node-001-cron",
+      "name": "Cron · lunes 7:00 hora Perú",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [-1900, 0]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH temas_recientes AS (SELECT id, titulo, contenido_md, regla_vida FROM lrac_temas WHERE ultima_emision IS NULL OR ultima_emision < NOW() - INTERVAL '8 weeks' ORDER BY prioridad DESC, random() LIMIT 1) SELECT * FROM temas_recientes;"
+      },
+      "id": "node-002-pg-tema",
+      "name": "Postgres · seleccionar tema",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [-1600, 0]
+    },
+    {
+      "parameters": {
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent",
+        "method": "POST",
+        "sendQuery": true,
+        "queryParameters": { "parameters": [{ "name": "key", "value": "={{ $env.GEMINI_API_KEY }}" }] },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contents\": [{\n    \"parts\": [{ \"text\": \"Eres redactor SHE minero. A partir del tema '{{ $json.titulo }}' (regla de la vida {{ $json.regla_vida }}), genera un guion de 90 s para video formativo en lenguaje claro, peruano y orientado a operario minero. Formato: 3 escenas de 30 s cada una. Devuelve JSON: { guion: string, hooks: [string], cierre: string }. Solo JSON.\" }]\n  }],\n  \"generationConfig\": { \"response_mime_type\": \"application/json\" }\n}"
+      },
+      "id": "node-003-gemini-guion",
+      "name": "Gemini · generar guion 90 s",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-1300, 0]
+    },
+    {
+      "parameters": {
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent",
+        "method": "POST",
+        "sendQuery": true,
+        "queryParameters": { "parameters": [{ "name": "key", "value": "={{ $env.GEMINI_API_KEY }}" }] },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contents\": [{\n    \"parts\": [{ \"text\": \"Genera 3 preguntas de opcion multiple sobre este tema SHE: '{{ $json.titulo }}'. Cada pregunta debe tener 4 opciones, solo 1 correcta. Apuntar al operario minero peruano. JSON: { preguntas: [{ id, enunciado, opciones: [string], correcta: int (0-3), explicacion: string }] }\" }]\n  }],\n  \"generationConfig\": { \"response_mime_type\": \"application/json\" }\n}"
+      },
+      "id": "node-004-gemini-quiz",
+      "name": "Gemini · generar quiz",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-1300, 200]
+    },
+    {
+      "parameters": {
+        "url": "{{ $env.VIDEO_GEN_URL }}/davinci/render",
+        "method": "POST",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={ \"guion\": \"{{ $json.guion }}\", \"voz\": \"Kore\", \"plantilla\": \"lrac-capsula-90s\", \"output_path\": \"/videos/lrac-{{ $now.format('yyyyMMdd') }}.mp4\" }"
+      },
+      "id": "node-005-davinci",
+      "name": "DaVinci MCP · renderizar video 90 s",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-1000, 0]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT telefono, nombre, gerencia, vp FROM lrac_trabajadores WHERE activo = true AND consentimiento = true;"
+      },
+      "id": "node-006-pg-roster",
+      "name": "Postgres · cargar roster activo",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [-700, 0]
+    },
+    {
+      "parameters": {
+        "batchSize": 50,
+        "options": { "reset": false }
+      },
+      "id": "node-007-split-batches",
+      "name": "Split in Batches · 50 contactos",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [-400, 0]
+    },
+    {
+      "parameters": {
+        "url": "={{ $env.EVOLUTION_URL }}/message/sendMedia/{{ $env.EVOLUTION_INSTANCE }}",
+        "method": "POST",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $json.telefono }}\",\n  \"mediatype\": \"video\",\n  \"mediaMessage\": {\n    \"caption\": \"Hola {{ $json.nombre }} 👷\\nCápsula SHE de esta semana ({{ DateTime.now().toFormat('dd/MM') }}). Después del video, responde al quiz para sumar puntos a tu gerencia.\",\n    \"media\": \"{{ $('DaVinci MCP · renderizar video 90 s').first().json.video_url }}\"\n  }\n}"
+      },
+      "id": "node-008-send-video",
+      "name": "WhatsApp · enviar video",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-100, 0]
+    },
+    {
+      "parameters": { "amount": 60, "unit": "seconds" },
+      "id": "node-009-wait",
+      "name": "Esperar 60 s antes del quiz",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [200, 0]
+    },
+    {
+      "parameters": {
+        "url": "={{ $env.EVOLUTION_URL }}/message/sendButtons/{{ $env.EVOLUTION_INSTANCE }}",
+        "method": "POST",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $json.telefono }}\",\n  \"title\": \"📝 Quiz semanal · 3 preguntas\",\n  \"description\": \"Tu respuesta correcta suma puntos a {{ $json.gerencia }}\",\n  \"buttons\": [\n    { \"buttonText\": { \"displayText\": \"Comenzar quiz\" } }\n  ],\n  \"metadata\": { \"workflow\": \"LRAC-004\", \"trabajador\": \"{{ $json.telefono }}\", \"quiz_id\": \"{{ $('Gemini · generar quiz').first().json.quiz_id }}\" }\n}"
+      },
+      "id": "node-010-send-quiz",
+      "name": "WhatsApp · enviar quiz",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [500, 0]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO lrac_envios_capsula (telefono, gerencia, vp, tema_id, video_url, quiz_id, enviado) VALUES ($1, $2, $3, $4, $5, $6, NOW());"
+      },
+      "id": "node-011-pg-log",
+      "name": "Postgres · log envío",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [800, 0]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE lrac_temas SET ultima_emision = NOW() WHERE id = $1;"
+      },
+      "id": "node-012-pg-update-tema",
+      "name": "Postgres · marcar tema como emitido",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [1100, 0]
+    }
+  ],
+  "connections": {
+    "Cron · lunes 7:00 hora Perú": { "main": [[{ "node": "Postgres · seleccionar tema", "type": "main", "index": 0 }]] },
+    "Postgres · seleccionar tema": { "main": [[{ "node": "Gemini · generar guion 90 s", "type": "main", "index": 0 }, { "node": "Gemini · generar quiz", "type": "main", "index": 0 }]] },
+    "Gemini · generar guion 90 s": { "main": [[{ "node": "DaVinci MCP · renderizar video 90 s", "type": "main", "index": 0 }]] },
+    "Gemini · generar quiz": { "main": [[{ "node": "Postgres · cargar roster activo", "type": "main", "index": 0 }]] },
+    "DaVinci MCP · renderizar video 90 s": { "main": [[{ "node": "Postgres · cargar roster activo", "type": "main", "index": 0 }]] },
+    "Postgres · cargar roster activo": { "main": [[{ "node": "Split in Batches · 50 contactos", "type": "main", "index": 0 }]] },
+    "Split in Batches · 50 contactos": { "main": [[{ "node": "WhatsApp · enviar video", "type": "main", "index": 0 }]] },
+    "WhatsApp · enviar video": { "main": [[{ "node": "Esperar 60 s antes del quiz", "type": "main", "index": 0 }]] },
+    "Esperar 60 s antes del quiz": { "main": [[{ "node": "WhatsApp · enviar quiz", "type": "main", "index": 0 }]] },
+    "WhatsApp · enviar quiz": { "main": [[{ "node": "Postgres · log envío", "type": "main", "index": 0 }]] },
+    "Postgres · log envío": { "main": [[{ "node": "Postgres · marcar tema como emitido", "type": "main", "index": 0 }]] }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" },
+  "meta": { "workflow_id": "LRAC-004", "description": "Cápsula semanal multimedia + quiz adaptativo · objetivo NMAP de 65.71% a 78%", "author": "Emanuel Edgar Ancco Guaygua" },
+  "tags": [{ "name": "lrac" }, { "name": "gaiatech-m1" }, { "name": "M1.B" }, { "name": "pilar-A" }]
+}
